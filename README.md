@@ -7,7 +7,9 @@ Before started:
 
 Step 1. open the EEGLAB 
 
-Step 2. click file -> load the exisiting dataset
+Step 2. click file -> load the exisiting dataset    
+
+<span style="color:red"> this is just for prac. In real experiemental setting, I need to import data in a right format</span>
 
 Step 3. find and click the "eeglab_data.set"
 
