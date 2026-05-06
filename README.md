@@ -1,6 +1,6 @@
-EEG-Study
+# EEG-Study
 
-How to start: 
+## How to start: 
 <img width="990" height="970" alt="Screenshot 2026-04-21 at 4 01 03 pm" src="https://github.com/user-attachments/assets/e7814f4f-daa0-4660-a1c5-543496d616cb" />
 
 Before started: 
