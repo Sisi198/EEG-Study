@@ -1,4 +1,4 @@
-# EEG-Study
+EEG-Study
 
 How to start: 
 <img width="990" height="970" alt="Screenshot 2026-04-21 at 4 01 03 pm" src="https://github.com/user-attachments/assets/e7814f4f-daa0-4660-a1c5-543496d616cb" />
@@ -16,6 +16,9 @@ After successful completion:
 This screen will shows up-
 
 <img width="1632" height="1190" alt="Screenshot 2026-05-05 at 5 28 49 pm" src="https://github.com/user-attachments/assets/1d77370c-50b9-4d4f-bd0d-a1b02f9a6862" />
+
+
+
 
 Terminology of EEGlab
 
@@ -43,9 +46,11 @@ Fundamentally, it must contain the following two columns:
 
 For example, if 'StimulusA' was presented at 1.5 seconds, and the subject pressed a 'Button' at 3.2 seconds, the text file would look roughly like this:
 
-latency, type
-1.5, StimulusA
-3.2, Button
+[Uploading Elatency, type
+1.5, stimulusA
+3.2, bottons
+EGeventcode.txt…]()
+
 
 Option Settings (Crucial Step):
 When a new window opens, you must inform EEGLAB how the data in the imported file is structured.
@@ -91,6 +96,8 @@ In such cases, entering the number 1 commands the system to "skip the first row 
 4. Time unit (sec)
 This tells the system what time unit the latency numbers in the text file are using. You can get a hint from the blue text example on the right.
 
+
+
     1: When the unit is in Seconds (e.g., 1.5 seconds).
     
     1E-3: When the unit is in Milliseconds (e.g., 1500ms).
@@ -104,10 +111,51 @@ Once I have adjusted these four settings to match the format of your prepared te
 
 <img width="1602" height="1094" alt="Screenshot 2026-05-05 at 5 43 42 pm" src="https://github.com/user-attachments/assets/b4676e4f-701f-4414-a828-da75cf68666d" />
 
+
+
+
 The event types in this sample dataset are 
 
 1. Square
 2. RT
 
 
+
+
+{Using EEG functions and plugin}
+
+
+<img width="864" height="1024" alt="Screenshot 2026-05-05 at 5 26 21 pm" src="https://github.com/user-attachments/assets/7b788e4f-069d-4875-b15c-ef3601c8bee3" />
+
+
+1. General Data & Basic Formats
+  
+   ASCII/float file or MATLAB array: Simple text file that can open in Excel file (e.g., .txt or .csv) containging sequences of numbers
+
+   Biosemi BDF file (BIOSIG Plugin): standard medical/research formats, research EEG device called 'Biosemi'
+
+   EDF/EDF+/GDF files: EDF (European Data Format), global standard format for pilysomnography and clinical EEGs. (most of the hospital equipment devices)
+
+2. Specific Equipment Manufacturer Formats
+The options below are proprietary formats created by individual EEG equipment manufacturers specifically for their machines.
+
+    ANT EEProbe (.CNT / .AVR file): Files extracted from 'ANT Neuro' equipment.
+
+    From BIDS(Brain Imaging Data Structure) folder structure: not a specific file, a folder organisation rule - international standard for naming folders and files to share research data. 
+
+ This menu is used to load an entire folder organized according to these rules at once.
+
+From Brain Vis. Rec. (.vhdr / .ahdr file) / Matlab file: The format for 'Brain Products (BrainVision)', a highly popular research EEG device. Typically, three files move together as a set: data (.eeg), header (.vhdr), and marker (.vmrk).
+
+From Netstation (binary / Multiple seg. / Matlab): The format for the 'Net Station' program created by 'EGI (now Magstim)'. You will frequently see this when using high-density EEG caps (resembling hairnets) with 128 or 256 electrodes.
+
+From Muse Direct / Monitor App .CSV file: Files extracted from 'Muse', a consumer-grade meditation and sleep EEG headband (available for general purchase), and its smartphone app.
+
+From Neuroscan (.CNT / .EEG file): The format of 'Compumedics Neuroscan', a historic and highly renowned EEG equipment brand.
+
+From Snapmaster .SMA file: The format for Snapmaster, one of the early PC-based EEG data collection programs.
+
+From .XDF or .XDFZ file: A general-purpose Extensible Data Format. It is primarily used when synchronizing and recording data from multiple devices simultaneously during an experiment, such as EEG, eye-trackers, and mouse movements.
+
+Import Magstim/EGI .mff file: A relatively modern format for the aforementioned EGI Net Station equipment.
 
