@@ -147,9 +147,9 @@ The options below are proprietary formats created by individual EEG equipment ma
 
   Neuroscan (.CNT / .EEG file): The format of 'Compumedics Neuroscan'; EEG equipment brand.
 
- Snapmaster .SMA file: The format for Snapmaster, one of the early PC-based EEG data collection programs.
+  Snapmaster .SMA file: The format for Snapmaster, PC-based EEG data collection programs.
 
-From .XDF or .XDFZ file: A general-purpose Extensible Data Format. It is primarily used when synchronizing and recording data from multiple devices simultaneously during an experiment, such as EEG, eye-trackers, and mouse movements.
+  From .XDF or .XDFZ file: A general-purpose Extensible Data Format. Primarily used for synchronising and recording data from multiple devices simultaneously during an experiments (i.e., EEG, eye-trackers, and mouse movements)
 
-Import Magstim/EGI .mff file: A relatively modern format for the aforementioned EGI Net Station equipment.
+  Import Magstim/EGI .mff file: A relatively modern format for the aforementioned EGI Net Station equipment.
 
