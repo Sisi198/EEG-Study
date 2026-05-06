@@ -1,13 +1,13 @@
-EEG-Study
+# EEG-Study
 
-How to start: 
+## How to start: 
 <img width="990" height="970" alt="Screenshot 2026-04-21 at 4 01 03 pm" src="https://github.com/user-attachments/assets/e7814f4f-daa0-4660-a1c5-543496d616cb" />
 
 Before started: 
 
 Step 1. open the EEGLAB 
 
-Step 2. click file -> load the exisiting dataset
+Step 2. click file -> load the exisiting dataset   <span style="color:red"> this is just for prac. In real experiemental setting, I need to import data in a right format</span>
 
 Step 3. find and click the "eeglab_data.set"
 
@@ -128,7 +128,7 @@ The event types in this sample dataset are
 <img width="864" height="1024" alt="Screenshot 2026-05-05 at 5 26 21 pm" src="https://github.com/user-attachments/assets/7b788e4f-069d-4875-b15c-ef3601c8bee3" />
 
 
-1. General Data & Basic Formats
+**1. General Data & Basic Formats**
   
    ASCII/float file or MATLAB array: Simple text file that can open in Excel file (e.g., .txt or .csv) containging sequences of numbers
 
@@ -136,22 +136,22 @@ The event types in this sample dataset are
 
    EDF/EDF+/GDF files: EDF (European Data Format), global standard format for pilysomnography and clinical EEGs. (most of the hospital equipment devices)
 
-2. Specific Equipment Manufacturer Formats
+**2. Specific Equipment Manufacturer Formats**
 The options below are proprietary formats created by individual EEG equipment manufacturers specifically for their machines.
 
     ANT EEProbe (.CNT / .AVR file): Files extracted from 'ANT Neuro' equipment.
 
-    From BIDS(Brain Imaging Data Structure) folder structure: not a specific file, a folder organisation rule - international standard for naming folders and files to share research data. 
+   BIDS(Brain Imaging Data Structure) folder structure: not a specific file, a folder organisation rule - international standard for naming folders and files to share research data; used to load an entire folder organised according to these rules at once. 
 
- This menu is used to load an entire folder organized according to these rules at once.
+   Brain Vis. Rec. (.vhdr / .ahdr file) / Matlab file: for 'Brain Products (BrianVision - research EEG device). 3 files move together as a set, data(.eeg), header (.vhdr), marker (.vmrk)
 
-From Brain Vis. Rec. (.vhdr / .ahdr file) / Matlab file: The format for 'Brain Products (BrainVision)', a highly popular research EEG device. Typically, three files move together as a set: data (.eeg), header (.vhdr), and marker (.vmrk).
+   Netstation (binary / Multiple seg. / Matlab: Net station (program), if you use hihg-density EEG caps (resembling hairnets) with 128/256 electtrodes
 
-From Netstation (binary / Multiple seg. / Matlab): The format for the 'Net Station' program created by 'EGI (now Magstim)'. You will frequently see this when using high-density EEG caps (resembling hairnets) with 128 or 256 electrodes.
-
-From Muse Direct / Monitor App .CSV file: Files extracted from 'Muse', a consumer-grade meditation and sleep EEG headband (available for general purchase), and its smartphone app.
-
-From Neuroscan (.CNT / .EEG file): The format of 'Compumedics Neuroscan', a historic and highly renowned EEG equipment brand.
+   Muse Direct / Monitor App .CSV file: import files extraced from 'Muse', a consumer-grade meditation or sleep EEG headband and its smartphone app. -> this could be used for remote participants study
+   
+  Neuroscan (.CNT / .EEG file): compumedics Neuroscan (EEG equipment brand)
+  
+  The format of 'Compumedics Neuroscan', a historic and highly renowned EEG equipment brand.
 
 From Snapmaster .SMA file: The format for Snapmaster, one of the early PC-based EEG data collection programs.
 
