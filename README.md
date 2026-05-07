@@ -258,8 +258,18 @@ Reason: If the Lower edge is raised to 1Hz (rather than 0.1Hz), the waveforms of
   
   Muscle noise (EMG)—generated when a subject frowns or tenses their neck or jaw—spreads widely across higher frequency bands (especially above 20Hz). -> When setting the upper limit into 40Hz: Reduce interference from a substantial amount of muscle noise.
 
+
+## After completion of setting the lower/higher limits: 
+
   
+<img width="1436" height="320" alt="Screenshot 2026-05-07 at 1 54 25 pm" src="https://github.com/user-attachments/assets/06b6309a-a5e0-40f6-8497-bf5c27da1dbc" />
 
 
+<img width="1438" height="1292" alt="Screenshot 2026-05-07 at 1 55 06 pm" src="https://github.com/user-attachments/assets/37bc391f-8d35-4218-a01b-4f2e8d3f2351" />
+
+
+## Deleting the dataset: 
+
+<img width="1378" height="734" alt="Screenshot 2026-05-07 at 1 56 36 pm" src="https://github.com/user-attachments/assets/a8852023-e1db-4402-888e-f748f2ba8b72" />
 
 
