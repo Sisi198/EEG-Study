@@ -59,7 +59,9 @@ EGeventcode.txt…]()
 ### Option Settings (Crucial Step):
 When a new window opens, you must inform EEGLAB how the data in the imported file is structured.
 
-1. Input field (column) names: Specify the names according to the column order in the text file. For instance, if the first column is the occurrence time and the second is the type, type latency type in this field, separated by a space.
+1. Input field (column) names: Specify the names according to the column order in the text file.
+  
+   EX: if the first column is the occurrence time and the second is the type, type latency type in this field, separated by a space.
 
 2. Time unit: If the latency numbers in the file are recorded in 'seconds', adjust this setting to match.
 
@@ -204,7 +206,8 @@ After Clicked Basic FIR filter (new, default):
 <img width="968" height="864" alt="Screenshot 2026-05-07 at 1 53 28 pm" src="https://github.com/user-attachments/assets/94d08f92-53ba-41fe-9311-7e9c9e1e2d20" />
 
 
-I've set the Lower edge of the frequency pass band (Hz) as in 1. 
+I've set the Lower edge of the frequency pass band (Hz) as in 1, Just for prac. 
+
 
 
 ### 3 Main categories based on objects:
@@ -215,18 +218,48 @@ I've set the Lower edge of the frequency pass band (Hz) as in 1.
 
      Reason: "Spike" wave forms (During the epilepsy diagnosis) are fast and acute - the frequency pathway **MUST** kept open up to a high limit (70Hz).
 
-  2. Cognitive Science Research (ERP, Event-Related Potentials): Setting- 0.1 Hz to 30 Hz
+  2. **Cognitive Science Research (ERP, Event-Related Potentials)**: Setting- 0.1 Hz to 30 Hz
 
       EEGLAB Input: Lower = 0.1, Higher = 30
 
-      Reason:
+      Reason: EEG showing the visual or auditory stimuli (ERPs); rapid waves above 30Hz (: muscle movements) needed to cut off to smooth out.
+
+      Using 0.1Hz (rather than 1Hz) prevents the slow lingering effects of the brainwaves from being removed.
+
+     !! In most cases of cognitive/neuro- psychology research will use this. In my research, I would be use this methods as well, since it will contains visual stimuli (Various types of facial expressions).
 
 
-     EEGs showing responses to visual or auditory stimuli (ERPs) typically have a smooth, mountain-peak-like shape. Thus, fine, rapid waves above 30Hz (such as muscle movements) are decisively cut off to smooth out the lines. Additionally, using 0.1Hz instead of 1Hz prevents the slow lingering effects of the brainwaves from being removed.
+  3. Cleaning the Data (Preprocessing for ICA Application): Setting- 1 Hz to 40 Hz (or 45 Hz)
 
-4. Cleaning the Data (Preprocessing for ICA Application)
-Setting: 1 Hz to 40 Hz (or 45 Hz)
+    EEGLAB Input: Lower = 1, Higher = 40
 
-EEGLAB Input: Lower = 1, Higher = 40
+    Reason: To automatically filter out major artifacts (e.g., eye blinks, sweats) using Independent component Analysis (ICA). Use this when data needed to be highly stable. Blocking the too slow waveforms (1Hz) and capping the top at 40Hz to preventing power line noise (In Europe; 50Hz)
 
-Reason: For a computer to automatically filter out major artifacts like eye blinks using Independent Component Analysis (ICA), the data must be highly stable. Blocking slow, ocean-wave-like fluctuations with a 1Hz cutoff and capping the top at 40Hz to fundamentally prevent South Korea's power line noise (60Hz) from entering is generally considered the most efficient and effective setting.
+
+=> 
+
+### Q1. Lower limit settings in cognitive science (ERP) research
+
+0.1Hz is mostly adopted as the standards in cogntive science reseach
+
+Reason: If the Lower edge is raised to 1Hz (rather than 0.1Hz), the waveforms of cognition-related brain waves that slowly appear 100m/s after the stimulus presentation (e.g., late event-related potnetials: P300, N400) can be distorted. 
+
+(Note: Recent analysis trends - To improve the accuracy of ICA, cross-application technique is actively used; Training the ICA algorithm only on a 'copy with a 1Hz filter applied' and then overlaying the resulting noise removal fomular onto the 'original data filtered at 0.1Hz'.)
+
+### Q2. The identity of movements below 1Hz and the reason for the 40Hz upper limit
+
+  *The nature of frequencies below 1Hz*: 
+  
+  primarily mechanical and physiological noise (: galvanic skin response (GSR) caused by sweat, slow drifts resulting from chemical changes between the electrodes and the scalp, and the patient's slow breathing).
+  
++) Although delta waves (0.5–4Hz) are treated as significant in sleep EEGs (not with awake subjects)
+
+  *reason for the 40Hz upper limit*
+  
+  Muscle noise (EMG)—generated when a subject frowns or tenses their neck or jaw—spreads widely across higher frequency bands (especially above 20Hz). -> When setting the upper limit into 40Hz: Reduce interference from a substantial amount of muscle noise.
+
+  
+
+
+
+
