@@ -254,7 +254,7 @@ Reason: If the Lower edge is raised to 1Hz (rather than 0.1Hz), the waveforms of
   
 +) Although delta waves (0.5–4Hz) are treated as significant in sleep EEGs (not with awake subjects)
 
-  *reason for the 40Hz upper limit*
+  * A reason for the 40Hz upper limit*
   
   Muscle noise (EMG)—generated when a subject frowns or tenses their neck or jaw—spreads widely across higher frequency bands (especially above 20Hz). -> When setting the upper limit into 40Hz: Reduce interference from a substantial amount of muscle noise.
 
