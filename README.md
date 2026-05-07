@@ -268,7 +268,7 @@ Reason: If the Lower edge is raised to 1Hz (rather than 0.1Hz), the waveforms of
 <img width="1438" height="1292" alt="Screenshot 2026-05-07 at 1 55 06 pm" src="https://github.com/user-attachments/assets/37bc391f-8d35-4218-a01b-4f2e8d3f2351" />
 
 
-## Deleting the dataset: 
+## How to deleting the dataset: 
 
 <img width="1378" height="734" alt="Screenshot 2026-05-07 at 1 56 36 pm" src="https://github.com/user-attachments/assets/a8852023-e1db-4402-888e-f748f2ba8b72" />
 
