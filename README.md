@@ -153,3 +153,80 @@ The options below are proprietary formats created by individual EEG equipment ma
 
   Import Magstim/EGI .mff file: A relatively modern format for the aforementioned EGI Net Station equipment.
 
+# Managing datasets in EEGLAB
+
+  ## Modify and store the dataset
+  
+  <img width="1418" height="1374" alt="Screenshot 2026-05-07 at 1 53 01 pm" src="https://github.com/user-attachments/assets/68e7a9e9-0f4b-4a2c-903b-b3fac8a1d14f" />
+
+
+# Filter the data
+
+## 1. FIR (Finite Impulse Response) Filters: most widely used methid in EEG research.
+
+   Advantage of use this funtion:
+
+   maintaining the exact occurence time of EEG waveforms - doesn't cause 'phase distortion (:pushes or twists the time axis of the data)'
+
+  ### FIR filter types: 
+  1. Basic FIR filter (new, default):
+
+     Standard filter, most recommened in EEGLAB. Stable with minimal signal distortion.
+
+     {using this default value is considered the general standard}
+
+  2. Windowed sinc FIR filter:
+
+    Traditional method in signal processing. Applies mathematical window function to reduce the waveform distortion that occurs when cutting off frequencies. <- Basic FIR filter adopts a specific form of this sinc method that is already optimised to the most stable values (rarely used)
+
+  3. Parks-McClellan (equiripple) FIR filter:
+
+     Specialised in cutting out the desired frequency band in a shape and accurate manner.
+
+     Risk: this filter creating artificial wave shapes (Ringing artifacts) around sharp waveforms (e.g., epileptic spikes)
+
+  4. Moving average FIR filter:
+
+     Smoothing the signal by averaging adjacent data points. Rarely used for precise frequency band separation.
+
+### IIR (Infinite Impulse Response) Filters type: 
+    Short IIR filter:
+
+    Calculation speed is faster, cuts frequencies sharply (compated to FIR). It can cause 'Phase Distortion'. Used when computational resources are lacking / real-time processing is required 
+
+    Not Recommened cases: 
+    
+    time accuracy is crucial (e.g., Event-Related Potentials (ERP)
+
+
+After Clicked Basic FIR filter (new, default):
+
+<img width="968" height="864" alt="Screenshot 2026-05-07 at 1 53 28 pm" src="https://github.com/user-attachments/assets/94d08f92-53ba-41fe-9311-7e9c9e1e2d20" />
+
+
+I've set the Lower edge of the frequency pass band (Hz) as in 1. 
+
+
+### 3 Main categories based on objects:
+
+  1. General Screening and Clinical Reading (The Basics): Setting - 1 Hz to 70 Hz (plus 60Hz Notch filter turned on)
+  
+      EEGLAB Input: Lower = 1, Higher = 70
+
+     Reason: "Spike" wave forms (During the epilepsy diagnosis) are fast and acute - the frequency pathway **MUST** kept open up to a high limit (70Hz).
+
+  2. Cognitive Science Research (ERP, Event-Related Potentials): Setting- 0.1 Hz to 30 Hz
+
+      EEGLAB Input: Lower = 0.1, Higher = 30
+
+      Reason:
+
+
+     EEGs showing responses to visual or auditory stimuli (ERPs) typically have a smooth, mountain-peak-like shape. Thus, fine, rapid waves above 30Hz (such as muscle movements) are decisively cut off to smooth out the lines. Additionally, using 0.1Hz instead of 1Hz prevents the slow lingering effects of the brainwaves from being removed.
+
+4. Cleaning the Data (Preprocessing for ICA Application)
+Setting: 1 Hz to 40 Hz (or 45 Hz)
+
+EEGLAB Input: Lower = 1, Higher = 40
+
+Reason: For a computer to automatically filter out major artifacts like eye blinks using Independent Component Analysis (ICA), the data must be highly stable. Blocking slow, ocean-wave-like fluctuations with a 1Hz cutoff and capping the top at 40Hz to fundamentally prevent South Korea's power line noise (60Hz) from entering is generally considered the most efficient and effective setting.
