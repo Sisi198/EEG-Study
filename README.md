@@ -238,7 +238,7 @@ I've set the Lower edge of the frequency pass band (Hz) as in 1, Just for prac.
 
 => 
 
-### Q1. Lower limit settings in cognitive science (ERP) research
+### Curiosity 1. Lower limit settings in cognitive science (ERP) research
 
 0.1Hz is mostly adopted as the standards in cogntive science reseach
 
@@ -246,7 +246,7 @@ Reason: If the Lower edge is raised to 1Hz (rather than 0.1Hz), the waveforms of
 
 (Note: Recent analysis trends - To improve the accuracy of ICA, cross-application technique is actively used; Training the ICA algorithm only on a 'copy with a 1Hz filter applied' and then overlaying the resulting noise removal fomular onto the 'original data filtered at 0.1Hz'.)
 
-### Q2. The identity of movements below 1Hz and the reason for the 40Hz upper limit
+### Curiosity 2. The identity of movements below 1Hz and the reason for the 40Hz upper limit
 
   *The nature of frequencies below 1Hz*: 
   
