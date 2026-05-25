@@ -273,3 +273,169 @@ Reason: If the Lower edge is raised to 1Hz (rather than 0.1Hz), the waveforms of
 <img width="1378" height="734" alt="Screenshot 2026-05-07 at 1 56 36 pm" src="https://github.com/user-attachments/assets/a8852023-e1db-4402-888e-f748f2ba8b72" />
 
 
+# Continous data_ EEGLAB
+
+## [Preparation]
+
+### Manual: First, if you have a raw EEG data file, determine the file format...
+
+### Meaning: First, check the label (file extension, e.g., .cnt, .edf) of your raw EEG file to identify which equipment was used to record it.
+
+
+# EEG Equipment & File Formats Frequently Used in Psychology
+
+## 1. Brain Products — .vhdr / .eeg / .vmrk
+
+: Currently the most widely used equipment in psychology research laboratories.
+
+* Product Lines: BrainAmp, actiCHamp, etc.
+
+* Data Structure: Files are saved as a 3-file set:
+
+  * vhdr: Header file (contains metadata like channel count, sampling frequency, etc.)
+  
+  * eeg: The actual raw EEG data.
+  
+  * vmrk: Marker file (contains event markers, such as stimulus onset times).
+
+* EEGLAB Import: Requires the BVA-io plugin to read.
+
+## 2. Biosemi — .bdf 
+
+: Frequently used in sleep research and cognitive experiments
+
+* Flagship Product: ActiveTwo system.
+
+* EEGLAB Import: Supported natively (Default / No extra plugin required).
+
+* Strengths: Highly optimised for high-density setups (64-channel, 128-channel).
+
+## 3. EDF / EDF+ — .edf
+
+: The most standard format used within clinical hospital environments
+
+* Primary Uses: Polysomnography (PSG / Sleep studies), epilepsy diagnosis, etc.
+
+* Characteristics: A universal format that can be exported by many different hardware systems.
+
+* EEGLAB Import: Supported natively (Default).
+
+## 4. Neuroscan — .cnt / .avg
+
+: A legacy system that has a long history of use in psychology labs.
+
+File Types:
+
+  * .cnt: Continuous raw data.
+
+  * .avg: Averaged Event-Related Potential (ERP) data.
+
+## 5. EGI (Electrical Geodesics) — .mff / .raw
+
+: Specialised for ultra-high-density electrode arrays (128 to 256 channels)
+
+  * Primary Uses: Widely utilised in developmental psychology and child research.
+  
+  * Design: Distinctive net-like, hydrocel geodesic sensor cap.
+  
+  * EEGLAB Import: Requires the MFF-matlab-io plugin.
+
+## 6. Common/Standard Format — .set
+
+: not a hardware-specific file, but rather EEGLAB's native storage format.
+
+  * Workflow: Import data via any external format $\rightarrow$ Save it within EEGLAB $\rightarrow$ Outputs as a .set file.
+    
+  * Advantage: Convenient because it can be opened directly in subsequent sessions without re-importing.
+
+## 7. Modern Standard — BIDS Format
+
+: An international standard has been actively pushed in recent research to enhance data sharing and reproducibility
+
+  * Focus: Rather than a specific file extension, it dictates a standardised folder architecture and metadata formatting method.
+  
+  * Primary Uses: Highly recommended when publishing open-access dataset repositories for journals.
+  
+  * EEGLAB Import: Fully supports both BIDS import and export functionalities.
+
+
+
+<img width="858" height="1032" alt="Screenshot 2026-05-25 at 2 25 14 pm" src="https://github.com/user-attachments/assets/4c1d1b67-9166-426d-b2cb-584e85dc944b" />
+
+$\rightarrow$ 
+
+* Multi-modal synchronisation (.XDF, .XDFD) : An integrated multi-stream container format used when recording EEG, eye-trackiing, and behavioural logs simultaneously in real-time via Lab streaming Layer (LSL)
+
+* Open Data standard (BIDS folder structure) : The international organisational data standard increasingly mandated by top-tier neuroimaging journals to ensure computational reproducibility and open science sharing
+
+* Consumer Grade/Alternative (.CSV - Muse) : Raw metrics exported from commerical, consumer-grad meditation bands
+
+* Consumer Grade/Alternative (Netstation) : A dedicated analysis software forma
+
+* Consumer Grade/Alternative (.SMA) : A legacy format utilised by specific niche analog data acquisition hardware nodes
+
+
+## [Step 1: Check the Default Menu]: " .edf (EDF/EDF +), .bdf (Biosemi), .cnt (Neuroscan) "
+
+### Manual: Look if a menu item is available in File $\rightarrow$ Using EEGLAB functions and plugins.
+### Meaning: Look for your specific file extension in the standard EEGLAB menu. If it's there, simply click it. This is the most straightforward, standard route.
+
+
+<img width="1932" height="1284" alt="Screenshot 2026-05-24 at 5 46 22 pm" src="https://github.com/user-attachments/assets/efcd8fe2-493f-4fbb-8814-1d5e5180f15e" />
+
+<img width="1024" height="872" alt="Screenshot 2026-05-24 at 5 46 06 pm" src="https://github.com/user-attachments/assets/35c42c68-a3de-4891-9a3b-49738136711b" />
+
+<img width="640" height="356" alt="Screenshot 2026-05-24 at 5 50 29 pm" src="https://github.com/user-attachments/assets/520349a3-67f8-4667-900d-2297cf63c2ed" />
+
+
+## [Step 2: Use the Universal Translator]: Target Formats are rare, proprietary, or highly legacy data configurations, not listed above.
+
+### Manual: Use menu item File $\rightarrow$ Using the File-IO interface.
+
+<img width="1256" height="1068" alt="Screenshot 2026-05-25 at 11 32 50 am" src="https://github.com/user-attachments/assets/b5e7e39f-08d6-491a-9e71-7e4adde49517" />
+<img width="524" height="346" alt="Screenshot 2026-05-25 at 11 33 07 am" src="https://github.com/user-attachments/assets/eb7053db-0caa-425e-8309-8ff988169386" />
+
+## [Step 3: Use the Medical-Grade Translator]: " .edf (EDF/EDF +), .bdf (Biosemi), .cnt (Neuroscan) $\rightarrow$ Steps 1 & 3 Merged" 
+
+## Manual: Use menu item File $\rightarrow$ Using the BIOSIG interface.
+## Meaning: This is a highly specialised translator tailored specifically for medical and laboratory data structures used in clinics and research facilities.
+
+<img width="1258" height="1070" alt="Screenshot 2026-05-25 at 11 36 47 am" src="https://github.com/user-attachments/assets/0f181230-4469-497b-9f99-8e836d70b114" />
+
+## [Step 4: Download a Dedicated Add-on]: " .vhdr (Brain Products), .mff (EGI), BIDS structures" 
+
+$\rightarrow$ These importers might already be visible in Step 1. However, if they are missing, this is your classic Step 4 scenario
+
+# Importing a MATLAB array _ Practising: https://eeglab.org/tutorials/04_Import/Importing_Continuous_and_Epoched_Data.html
+
+ ## % build a matrix of random test data (32 channels, 100 seconds at 256 Hz)
+
+ $\rightarrow$ Used ocatave: first attempt, error occured
+
+ 
+<img width="2880" height="1800" alt="Screenshot 2026-05-25 at 3 30 40 pm" src="https://github.com/user-attachments/assets/cd3afc50-c061-4fa1-a9d8-26ac25151963" />
+
+<img width="210" height="230" alt="Screenshot 2026-05-25 at 3 48 57 pm" src="https://github.com/user-attachments/assets/8a7bbda5-fffa-4301-8d7d-570670adc19d" />
+ 
+<img width="1978" height="1106" alt="Screenshot 2026-05-25 at 3 43 28 pm" src="https://github.com/user-attachments/assets/8a46610f-5f22-4d5a-a8f5-e9ccaf75ddea" />
+
+
+ 
+ $\rightarrow$  troubleshooting for the EEGLAB .mat file import error:
+
+You need to re-save the data in the Octave Online console by explicitly passing the -mat or -v6 version flags
+
+Used code- 
+
+eegdata = rand(32, 256*100);
+
+save('-mat', 'fake_eeg.mat', 'eegdata');
+
+
+<img width="236" height="210" alt="Screenshot 2026-05-25 at 3 51 37 pm" src="https://github.com/user-attachments/assets/6b003605-4a1c-4d05-a380-ac56434049b2" />
+
+<img width="1238" height="1074" alt="Screenshot 2026-05-25 at 3 51 47 pm" src="https://github.com/user-attachments/assets/b80b872a-e612-4d39-8a46-65afb896714c" />
+
+
+
+
