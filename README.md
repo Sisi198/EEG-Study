@@ -438,4 +438,65 @@ save('-mat', 'fake_eeg.mat', 'eegdata');
 
 
 
+# Sample practice challenge
 
+Reference: Sex modulation of faces prediction error in the autistic brain
+
+## EEG recording. 
+
+* EEG recordings were performed at the IRMaGeneurophysiology facility (Grenoble, France). **BrainAmp amplifiers and EasyCaps (Brain Products GmbH, Germany) with 96 active electrodes following the 10–5 standard system were used for EEG recording**, with impedance kept below 25 kΩ. A sampling rate of 1000 Hz was used for signal recording, with an anti-aliasing filter at 500 Hz. 
+* The ground electrode for the EEG was FPz, while the reference electrode was FCz. Two electrodes on the left and right outer canthi of the eyes and two others above and below the left
+eye were used to record the horizontal and vertical electrooculographic (EOG) activity (hEOG and vEOG), respectively.
+The ground electrode for EOG was positioned on the left base of the neck.
+
+
+* EEGLAB Data import file selection: 
+
+<img width="1908" height="1164" alt="Screenshot 2026-05-27 at 2 57 38 pm" src="https://github.com/user-attachments/assets/8e320296-d8c6-44ad-9d3c-f7950432fe48" />
+
+
+
+
+## EEG preprocessing.
+
+* Brainstorm software105 and MATLAB (The
+MathWorks Inc.) scripts were used for EEG preprocessing.
+Muscular artifacts were manually discarded for each participant.
+The signal was then re-referenced using the average reference.
+Eye movements were corrected using signal space projection
+(SSP). Finally, a band-pass filter of 0.1–40 Hz was applied to the
+cleaned signal and trials were epoched from 100 ms pre-stimulus
+to 600 ms post-stimulus, except for the first three trials of the sequences and trials presented after the deviant or target, which
+were excluded. In the end, 1% of the trials from NA participants
+and 2.3% of the trials from autistic participants were discarded
+during preprocessing. Next, bad channels were interpolated based
+on neighboring channels. An average of 4 channels were inter-
+polated per participant. For six participants, the signal was
+recorded on only 64 electrodes and missing electrodes (dis-
+tributed on the scalp) were also interpolated for statistical
+analyses.
+Event-related potentials. For each subject and each condition of
+interest in the oddball sequence (standard, dHSF, dLSF) and in
+the equiprobable sequence, all trials were averaged. MMRs were
+computed for HSF and LSF conditions by calculating the arith-
+metic difference between the ERPs to the deviant in the oddball
+sequence, and the ERPs to the same stimulus presented in the
+equiprobable sequence. Finally, grand average waveforms were
+computed across participants for each ERP and deviant
+condition.
+Source reconstruction. The anatomical location of the activity was
+estimated by source reconstruction using Brainstorm. A realistic
+forward model based on the ICBM152 template and a standard
+co-registered set of electrode positions was used. Noise covariance
+matrices were computed for each participant using the baseline
+activity of each condition. The source space was restricted to the
+cortical surface with 2500 dipoles and the inversion kernel was
+computed using sLoreta106 assuming SNR 3 and unconstrained
+orientation. Source reconstruction was performed for each par-
+ticipant in each condition, except for one autistic participant who
+had an atypical signal in frontal areas. Then, the difference in
+sources between deviant and equiprobable conditions (for HSF and LSF) was performed for each participant as well as the difference between HSF MMR and LSF MMR. Finally, the signal was
+average for each group and subgroup (autistic males, autistic
+females, NA males and NA females) in each condition.
+
+FYI, autistic individuals would rely on High Spatial Frequencies of the images (HSF, conveying local information) / Low Spatial Frequencies (LSF)
