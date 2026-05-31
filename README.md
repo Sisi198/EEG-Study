@@ -555,13 +555,13 @@ $\rightarrow$ Make the scale into 300 - 500, make it 400
 
 <img width="1490" height="900" alt="Screenshot 2026-05-31 at 3 12 33 pm" src="https://github.com/user-attachments/assets/a33f0866-435d-40f5-aee8-a0e89f07ed9e" />
 
-# 4. Reject data using CLean Rawdata and ASR
+# 4. Reject data using Clean Rawdata and ASR
 
 <img width="1476" height="912" alt="Screenshot 2026-05-31 at 3 22 44 pm" src="https://github.com/user-attachments/assets/0f8c7cc7-8efd-4336-9cb5-5e697f7007d6" />
 
 <img width="1004" height="1232" alt="Screenshot 2026-05-31 at 3 23 13 pm" src="https://github.com/user-attachments/assets/171e7f44-112f-402c-8c46-12f34b3192f7" />
 
-## Parameter Breakdown
+## Curiosity: Parameter Breakdown
 
 ### 1. Remove channel drift (Unchecked)
 
@@ -571,4 +571,119 @@ $\rightarrow$ Make the scale into 300 - 500, make it 400
 
 * Why we uncheck it: Since we already applied a 1 Hz high-pass filter in the previous step, that filter has already eliminated these slow baseline drifts. Running it twice is redundant, so we leave it unchecked.
 
-* 
+### 2. Remove channel if flat for more than 5 seconds
+
+* "Identifies and removes a channel as dead if its signal goes completely flat for 5 seconds or longer."
+
+* Reality: A functional EEG channel must constantly fluctuate.
+
+* Why we use it: If a signal shows zero variance for more than 5 seconds, the electrode has either completely disconnected from the scalp or suffered a hardware malfunction. This setting automatically drops that faulty channel from the dataset.
+
+### 3. Min acceptable correlation: 0.85
+
+* "A channel is considered normal only if its signal movement correlates at least 85% with its neighbouring channels."
+
+* Reality: Because of volume conduction through the scalp, adjacent EEG electrodes should naturally record highly similar signal patterns. For instance, channel Fz should fluctuate similarly to F3 and F4.
+
+* Why we use it: If the correlation coefficient drops below 0.85, it means the channel is behaving erratically compared to its neighbours. Python flags this as an anomaly and removes it. The higher you set this threshold, the more strictly it discards channels (0.85 is the standard baseline value).
+
+
+# Curiosity: Do we need to set the channel location?
+
+## Why Channel Locations Are Essential
+
+* Without channel locations mapped, your analysis will immediately hit several walls:
+
+  * Immediate Errors: You will experience re-referencing failures & you will be completely unable to run ICA to remove eye-blink artifacts.
+
+  * Downstream Limitations: You won't be able to generate scalp topographies (the colour-mapped 2D head plots showing voltage distribution) or properly visualise your Event-Related Potential (ERP) spatial distributions.
+
+## How to set the channel location:
+
+Step 1. Edit $\rightarrow$ channel locations
+
+<img width="1704" height="1260" alt="Screenshot 2026-05-31 at 4 16 31 pm" src="https://github.com/user-attachments/assets/29edbd2e-e0f1-4c42-ab35-5f1c1c7eb4eb" />
+
+
+Step 2. When this screen pops up, click the cancel 
+
+<img width="1122" height="730" alt="Screenshot 2026-05-31 at 4 15 01 pm" src="https://github.com/user-attachments/assets/2a01031e-9ba5-410e-a65a-18cf7643d077" />
+
+### Why You Should Cancel
+
+This prompt is offering to automatically find coordinates using EEGLAB's generic system template (standard_1005.elc). 
+
+However, for this specific dataset, we want to load the exact BioSemi64.loc file provided by the authors. 
+
+Using the dataset's native mapping file ensures that your channel coordinates are 100% accurate to how the actual experiment was recorded.
+
+
+Step 3. Cancel $\rightarrow$ Read locations $\rightarrow$ Finder $\rightarrow$ Onedrive $\rightarrow$  ds006648 $\rightarrow$ BioSemi64.loc
+
+<img width="1310" height="1478" alt="Screenshot 2026-05-31 at 4 16 49 pm" src="https://github.com/user-attachments/assets/690cbd58-93be-47bf-a3b5-c24498ca84e5" />
+
+<img width="1310" height="1478" alt="Screenshot 2026-05-31 at 4 16 49 pm" src="https://github.com/user-attachments/assets/d944cb80-0ddf-4c58-8164-ae501c20bf85" />
+
+<img width="508" height="706" alt="Screenshot 2026-05-31 at 4 18 08 pm" src="https://github.com/user-attachments/assets/0c2a57f9-c42d-4054-a73b-cff1edfa1fa1" />
+
+
+### Error Occurred: Still indicated as channel locations: no (labels only)
+
+### Figure out - The Cause
+
+: EEGLAB rejected the file mapping because the channel dimensions did not match (64 spatial points in the file vs. 70 total tracks in the dataset).
+
+### Solution: Remove the EXG Channels First, Then Add Locations
+
+* Remove the EXG Channels First
+
+* Go to the top menu and click Edit $\rightarrow$ Select data, then configure the following settings:
+
+    * Check or highlight the "Channel(s) to remove" field.
+
+    * In the input text block below it, type or paste the exact auxiliary labels: EXG1 EXG2 EXG3 EXG4 EXG5 EXG6 EXG7 EXG8
+ 
+    * Ensure "Remove these" is active $\rightarrow$ Click OK.
+
+ <img width="1720" height="1204" alt="Screenshot 2026-05-31 at 4 44 14 pm" src="https://github.com/user-attachments/assets/41860c7e-9676-450f-b79a-9cb36b7c5f42" />
+
+ <img width="1018" height="712" alt="Screenshot 2026-05-31 at 4 44 30 pm" src="https://github.com/user-attachments/assets/1edff898-cd49-4eaa-bfb0-421afe8dd0b5" />
+
+ <img width="996" height="694" alt="Screenshot 2026-05-31 at 4 44 51 pm" src="https://github.com/user-attachments/assets/112490a5-8573-4c96-9b16-5d3ef1d82425" />
+
+$\rightarrow$ Click Ok
+
+  * These steps were successful $\rightarrow$ Try the Channel location setting again.
+
+# Re-referencing the data
+
+* Tools $\rightarrow$ Re-referencing the data
+
+<img width="862" height="770" alt="Screenshot 2026-05-31 at 4 47 39 pm" src="https://github.com/user-attachments/assets/1ab2956d-d60c-4520-a679-5cc2fe79c999" />
+ 
+## Why are we doing this?
+
+* The Original Baseline: The raw data was initially recorded using the EXG5 and EXG6 electrodes (placed on the mastoids behind the ears) as the physical reference points.
+
+* The Problem: Because we just removed those auxiliary EXG channels from our dataset to fix our spatial dimensions, our data loop no longer has an active baseline link to track.
+
+* The Solution: To fix this, we recalculate a new baseline reference by shifting our tracking index to the Average Reference (the mathematical average of all remaining scalp channels combined).
+
+## Why Average Reference is great for ERPs
+
+By computing the mean signal across all 64 scalp electrodes and subtracting it from each individual channel, you cancel out localised biases. 
+
+This creates a neutral baseline that brings out the true geographical distribution of your neural activity, which is ideal for isolating components like the N400 or P300 when analysing text or poetry processing.
+
+
+# Decompose data by ICA
+
+* Tools $\rightarrow$ Decompose data by ICA
+
+<img width="1236" height="602" alt="Screenshot 2026-05-31 at 4 52 16 pm" src="https://github.com/user-attachments/assets/c1474a89-9c97-4ba6-99d9-69fb25fb9a1e" />
+
+<img width="774" height="684" alt="Screenshot 2026-05-31 at 4 52 56 pm" src="https://github.com/user-attachments/assets/2511ea73-c73a-4cee-b16a-a148d00279f9" />
+
+Takes quite of the time.
+
+
