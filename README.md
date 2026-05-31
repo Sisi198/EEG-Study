@@ -686,4 +686,8 @@ This creates a neutral baseline that brings out the true geographical distributi
 
 Takes quite of the time.
 
+## When this screen pops up, don't press anything. Leave it.
+
+<img width="650" height="324" alt="Screenshot 2026-05-31 at 4 54 48 pm" src="https://github.com/user-attachments/assets/e073077a-7e73-4c40-b52e-7d57a7bb55e5" />
+
 
