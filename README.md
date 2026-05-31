@@ -440,63 +440,135 @@ save('-mat', 'fake_eeg.mat', 'eegdata');
 
 # Sample practice challenge
 
-Reference: Sex modulation of faces prediction error in the autistic brain
+Reference: Soma Chaudhuri and Joydeep Bhattacharya (2025). Poetry Assessment EEG Dataset 1. OpenNeuro. [Dataset] doi: doi:10.18112/openneuro.ds006648.v1.0.0
 
 ## EEG recording. 
 
-* EEG recordings were performed at the IRMaGeneurophysiology facility (Grenoble, France). **BrainAmp amplifiers and EasyCaps (Brain Products GmbH, Germany) with 96 active electrodes following the 10–5 standard system were used for EEG recording**, with impedance kept below 25 kΩ. A sampling rate of 1000 Hz was used for signal recording, with an anti-aliasing filter at 500 Hz. 
-* The ground electrode for the EEG was FPz, while the reference electrode was FCz. Two electrodes on the left and right outer canthi of the eyes and two others above and below the left
-eye were used to record the horizontal and vertical electrooculographic (EOG) activity (hEOG and vEOG), respectively.
-The ground electrode for EOG was positioned on the left base of the neck.
+Dataset Core Information: ds006648
 
+## Experimental Overview: 
 
-* EEGLAB Data import file selection: 
-
-<img width="1908" height="1164" alt="Screenshot 2026-05-27 at 2 57 38 pm" src="https://github.com/user-attachments/assets/8e320296-d8c6-44ad-9d3c-f7950432fe48" />
-
+1. Topic: Neural mechanics of reading poetic language.
+2. Participants: $47$ individuals (whose data passed EEG quality control standards).
+3. EEG Setup: 64-channel, continuous data logging.
 
 
 
-## EEG preprocessing.
+## Stimuli: 
 
-* Brainstorm software105 and MATLAB (The
-MathWorks Inc.) scripts were used for EEG preprocessing.
-Muscular artifacts were manually discarded for each participant.
-The signal was then re-referenced using the average reference.
-Eye movements were corrected using signal space projection
-(SSP). Finally, a band-pass filter of 0.1–40 Hz was applied to the
-cleaned signal and trials were epoched from 100 ms pre-stimulus
-to 600 ms post-stimulus, except for the first three trials of the sequences and trials presented after the deviant or target, which
-were excluded. In the end, 1% of the trials from NA participants
-and 2.3% of the trials from autistic participants were discarded
-during preprocessing. Next, bad channels were interpolated based
-on neighboring channels. An average of 4 channels were inter-
-polated per participant. For six participants, the signal was
-recorded on only 64 electrodes and missing electrodes (dis-
-tributed on the scalp) were also interpolated for statistical
-analyses.
-Event-related potentials. For each subject and each condition of
-interest in the oddball sequence (standard, dHSF, dLSF) and in
-the equiprobable sequence, all trials were averaged. MMRs were
-computed for HSF and LSF conditions by calculating the arith-
-metic difference between the ERPs to the deviant in the oddball
-sequence, and the ERPs to the same stimulus presented in the
-equiprobable sequence. Finally, grand average waveforms were
-computed across participants for each ERP and deviant
-condition.
-Source reconstruction. The anatomical location of the activity was
-estimated by source reconstruction using Brainstorm. A realistic
-forward model based on the ICBM152 template and a standard
-co-registered set of electrode positions was used. Noise covariance
-matrices were computed for each participant using the baseline
-activity of each condition. The source space was restricted to the
-cortical surface with 2500 dipoles and the inversion kernel was
-computed using sLoreta106 assuming SNR 3 and unconstrained
-orientation. Source reconstruction was performed for each par-
-ticipant in each condition, except for one autistic participant who
-had an atypical signal in frontal areas. Then, the difference in
-sources between deviant and equiprobable conditions (for HSF and LSF) was performed for each participant as well as the difference between HSF MMR and LSF MMR. Finally, the signal was
-average for each group and subgroup (autistic males, autistic
-females, NA males and NA females) in each condition.
+Total of 210 textual stimuli divided across 7 blocks:
 
-FYI, autistic individuals would rely on High Spatial Frequencies of the images (HSF, conveying local information) / Low Spatial Frequencies (LSF)
+1. Haiku (70 items): Nature-themed poetry.
+
+2. Senryu (70 items): Emotion-themed poetry.
+
+3. Control (70 items): Non-poetic, standard prose.
+
+
+## * Behavioural Evaluations (5 Subjective Dimensions, 7-Point Likert Scale)
+
+1. Aesthetic Appeal
+
+2. Vivid Imagery
+
+3. Being Moved
+
+4. Originality
+
+5. Creativity
+
+
+## File Architecture (Per Subject Directory)
+
+* File Name : eeg.set - Actual processed EEG tracking records (EEGLAB Native format $\rightarrow$ opens instantly).
+
+* File Name : eeg.json - Recording metadata and hardware specifications
+
+* File Name : channels.tsv - Spatial electrode channel mapping profiles.
+
+* File Name : events.tsv - Logged trial event marker timelines.
+
+## Critical Trigger Event Codes
+
+* 65285, 65286: Baseline baseline metrics (Pre-experiment Resting State).
+
+* 65287, 65288: Fatigue control metrics (Post-experiment Resting State).
+
+## Secondary Data Repositories (/derivatives/)
+
+* Behavioural Records: Trial-by-trial evaluation metrics saved in individual ".csv" format logs.
+
+* Psychometric Profiles: Standard clinical battery scores including "PANAS, Openness, Curiosity, VVIQ, AVIQ, MAAS, and AReA surveys".
+
+# 1. Import data
+
+<img width="454" height="938" alt="Screenshot 2026-05-31 at 2 22 49 pm" src="https://github.com/user-attachments/assets/6d094953-71d8-4c4e-8a14-aa678f54a9de" />
+
+<img width="1430" height="1236" alt="Screenshot 2026-05-31 at 2 24 27 pm" src="https://github.com/user-attachments/assets/adfe074f-c5db-47e5-abe9-cd8025ee61f6" />
+
+# 2. Plot the raw EEG signals to see what they look like visually + Scan the display to identify channels with severe artifact noise.
+
+
+<img width="1586" height="1096" alt="Screenshot 2026-05-31 at 2 28 05 pm" src="https://github.com/user-attachments/assets/4d598ce6-48db-43ec-ad3a-e770ddff07fa" />
+
+$\rightarrow$ Make the scale into 300 - 500, make it 400
+
+<img width="1602" height="1112" alt="Screenshot 2026-05-31 at 2 30 07 pm" src="https://github.com/user-attachments/assets/50a7fc59-ee34-409b-a94d-cc17136a5970" />
+
+# Why We Plot Raw Data First: 
+
+* The main purpose of checking the raw data visually before running automated preprocessing pipelines is to determine if the dataset is viable.
+
+
+EX: 
+
+* Half of the channels are completely flat: This indicates a hardware recording failure, meaning this participant's session will likely be unusable.
+
+* The signals are excessively noisy throughout: It might be difficult to recover clean signals even with advanced preprocessing.
+
+* The data looks relatively clean: Your preprocessing strategy can remain straightforward and minimal.
+
+
+# 3. Filtering 
+
+* Tools $\rightarrow$ Filter the data $\rightarrow$ Basic FIR filter
+
+* Filter settings:
+
+  1. Lower edge frequency (High-pass filter): 1 (Removes slow baseline drifts below 1 Hz)
+  
+  2. Upper edge frequency (Low-pass filter): 40 (Removes high-frequency line noise above 40 Hz)
+ 
+  3. All other parameters: Keep as default $\rightarrow$ Click OK
+  
+<img width="1614" height="1368" alt="Screenshot 2026-05-31 at 3 01 20 pm" src="https://github.com/user-attachments/assets/e4a964e3-a016-4b77-af9b-9debbbd86f29" />
+
+<img width="1598" height="1098" alt="Screenshot 2026-05-31 at 3 17 20 pm" src="https://github.com/user-attachments/assets/c72f744b-4aa8-4e6f-a844-141e83bcaf45" />
+
+<img width="1596" height="1108" alt="Screenshot 2026-05-31 at 3 20 38 pm" src="https://github.com/user-attachments/assets/b0556d86-aa89-4fd7-a64e-a20dd6ee569f" />
+
+<img width="968" height="870" alt="Screenshot 2026-05-31 at 3 12 04 pm" src="https://github.com/user-attachments/assets/983005bb-47ad-4a4d-9639-4d8ae381c69c" />
+
+<img width="1644" height="1178" alt="Screenshot 2026-05-31 at 3 04 12 pm" src="https://github.com/user-attachments/assets/4ea045c8-7967-4c98-a3e0-77541ac00bde" />
+
+$\rightarrow$ Make the scale into 300 - 500, make it 400
+
+<img width="1490" height="900" alt="Screenshot 2026-05-31 at 3 12 33 pm" src="https://github.com/user-attachments/assets/a33f0866-435d-40f5-aee8-a0e89f07ed9e" />
+
+# 4. Reject data using CLean Rawdata and ASR
+
+<img width="1476" height="912" alt="Screenshot 2026-05-31 at 3 22 44 pm" src="https://github.com/user-attachments/assets/0f8c7cc7-8efd-4336-9cb5-5e697f7007d6" />
+
+<img width="1004" height="1232" alt="Screenshot 2026-05-31 at 3 23 13 pm" src="https://github.com/user-attachments/assets/171e7f44-112f-402c-8c46-12f34b3192f7" />
+
+## Parameter Breakdown
+
+### 1. Remove channel drift (Unchecked)
+
+* "Removes slow tracking drift where a signal gradually floats upward or downward."
+  
+* Reality: If an electrode shifts slightly against the participant's scalp, the baseline signal will slowly drift up or down.
+
+* Why we uncheck it: Since we already applied a 1 Hz high-pass filter in the previous step, that filter has already eliminated these slow baseline drifts. Running it twice is redundant, so we leave it unchecked.
+
+* 
