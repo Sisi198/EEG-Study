@@ -766,3 +766,288 @@ $\rightarrow$ Click Accept
 
 
 
+[EEG_Study_Notes.md](https://github.com/user-attachments/files/28676029/EEG_Study_Notes.md)# EEG Analysis Study Notes
+> Dataset: OpenNeuro ds006648 (Poetry Assessment EEG Dataset)
+> Tool: EEGLAB
+
+---
+
+## 1. Downloading the Dataset
+
+### How to download data from OpenNeuro?
+
+**Option 1: Browser Download**
+- Click the Download button on the OpenNeuro website
+- Convenient but restarts from scratch if interrupted
+
+**Option 2: AWS S3 (Recommended)**
+```bash
+# Install AWS CLI on Mac (direct installer)
+# Download .pkg from: https://awscli.amazonaws.com/AWSCLIV2.pkg
+
+# Verify installation
+aws --version
+
+# Download full dataset
+aws s3 sync --no-sign-request \
+  s3://openneuro.org/ds006648 \
+  ~/Library/CloudStorage/OneDrive-Personal/ds006648
+
+# Download a single subject only
+aws s3 sync --no-sign-request \
+  s3://openneuro.org/ds006648/sub-001 \
+  ~/Library/CloudStorage/OneDrive-Personal/ds006648/sub-001
+
+# Stop download: Ctrl + C
+# Resume download: run the same command again (already downloaded files are skipped)
+```
+
+**AWS S3 vs Browser**
+| Method | Pros | Cons |
+|---|---|---|
+| Browser | No installation needed | Restarts if interrupted |
+| AWS S3 | Fast, resumable | Requires CLI installation |
+
+---
+
+## 2. Dataset Overview: ds006648
+
+### Experiment Summary
+- **Topic**: Brain responses while reading poetic language
+- **Participants**: 47 (passed EEG quality check)
+- **EEG**: 64-channel BioSemi, 512Hz sampling rate
+
+### Stimulus Types
+| Type | Count | Theme |
+|---|---|---|
+| Haiku | 70 | Nature |
+| Senryu | 70 | Emotion |
+| Control | 70 | Non-poetic prose |
+
+### Trigger Codes
+| Code | Meaning |
+|---|---|
+| 65281 | Text display onset |
+| **65282** | **Stimulus type trigger (used for Epoching!)** |
+| 65283 | Rating screen |
+| 65284 | Rating completed |
+| 65285, 65286 | Resting state (before experiment) |
+| 65287, 65288 | Resting state (after experiment) |
+
+### How to find trigger codes?
+Check in the following order for each dataset:
+1. **README** file (check first)
+2. **eeg.json**
+3. **Preprocessing scripts** (e.g., Preprocessing.m)
+4. **events.tsv** directly
+
+> **If you collected the data yourself**: You define the trigger codes during experiment design, so you already know them. Still, it's good practice to document them in a README or codebook.
+
+### Folder Structure
+```
+ds006648/
+├── README
+├── dataset_description.json
+├── participants.tsv
+├── code/
+│   ├── BioSemi64.loc       ← Channel location file
+│   └── Preprocessing.m     ← Preprocessing script
+├── stimuli/                ← 210 stimulus texts
+├── derivatives/
+│   ├── Behavioural_Ratings/    ← Trial-by-trial ratings per participant
+│   └── Psychometric_Responses/ ← Questionnaire data
+└── sub-001/
+    └── eeg/
+        ├── sub-001_task-readpoetry_eeg.set       ← EEG data (EEGLAB format)
+        ├── sub-001_task-readpoetry_eeg.json
+        ├── sub-001_task-readpoetry_channels.tsv
+        └── sub-001_task-readpoetry_events.tsv
+```
+
+---
+
+## 3. EEGLAB Preprocessing Workflow
+
+### Overview
+```
+Load Raw Data
+    ↓
+(Optional) Trim data — if file is too large
+    ↓
+1. Bandpass Filtering (1–40Hz)
+    ↓
+2. Remove EXG Channels
+    ↓
+3. Add Channel Locations
+    ↓
+4. Clean Rawdata / ASR (remove bad channels)
+    ↓
+5. Re-referencing (Average reference)
+    ↓
+6. ICA
+    ↓
+7. Remove ICA artifact components (ICLabel)
+```
+
+---
+
+### Step 0. Trim Data (Optional — for large files)
+**Edit → Select data**
+- Time range: `0 to 600` (first 10 minutes only)
+
+> **Why?** The full dataset (~868MB) can cause EEGLAB to freeze on a Mac with limited RAM. For learning purposes, trimming to a smaller segment makes processing much faster.
+
+---
+
+### Step 1. Bandpass Filtering (1–40Hz)
+**Tools → Filter the data → Basic FIR filter**
+- Lower edge: `1` Hz
+- Upper edge: `40` Hz
+
+> **Why?** Removes slow drifts below 1Hz and high-frequency noise above 40Hz.
+> **Important:** Channel locations must be added before filtering — otherwise errors will occur.
+
+---
+
+### Step 2. Remove EXG Channels
+**Edit → Select data**
+- Channel(s): `EXG1 EXG2 EXG3 EXG4 EXG5 EXG6 EXG7 EXG8`
+- Check "on → remove these"
+
+> **Why?** EXG1–EXG8 are external electrodes (EOG, muscle). BioSemi64.loc contains only 64 channels, so EXG channels must be removed first to avoid a channel count mismatch (70 vs 64).
+
+---
+
+### Step 3. Add Channel Locations
+**Edit → Channel locations**
+1. When prompted, click **Cancel** (to manually specify the file)
+2. Click **"Read locations"**
+3. Select file format: **"EEGLAB polar .loc file"**
+4. Navigate to `ds006648/code/BioSemi64.loc`
+
+> **Why?** Without channel locations, most EEGLAB functions (ICA, topography plots, re-referencing) will not work.
+
+---
+
+### Step 4. Clean Rawdata / ASR
+**Tools → Reject data using Clean Rawdata and ASR**
+
+Key settings:
+| Option | Value | Reason |
+|---|---|---|
+| Remove channel drift | **Unchecked** | Already filtered |
+| Flat for more than | **5** sec | Flat signal = dead electrode |
+| Min acceptable correlation | **0.85** | Channels with <85% similarity to neighbors are removed |
+
+> **No channels removed?** That means all channels are good — that's perfectly fine!
+
+---
+
+### Step 5. Re-referencing
+**Tools → Re-reference the data**
+- Select "Compute average reference"
+
+> **Why?** The original recording used earlobes (EXG5, EXG6) as reference. Average reference sets the mean of all channels to zero, providing a more balanced and standard reference. Required before ICA.
+
+---
+
+### Step 6. ICA
+**Tools → Decompose data by ICA**
+- Algorithm: **picard (infomax picard.m)** recommended
+
+> **runica vs picard:**
+> - runica: Standard algorithm, but very slow (hours)
+> - picard: Same result, much faster (minutes to tens of minutes)
+>
+> **Rank 63 popup:** After average referencing, one degree of freedom is lost mathematically, so 64 channels → rank 63. This is normal — just click OK.
+>
+> **No Interrupt window with picard:** Unlike runica, picard may not show an Interrupt window. If menus are unclickable, ICA is still running.
+
+---
+
+### Step 7. Remove ICA Artifact Components (ICLabel)
+**Tools → Classify components using ICLabel → Label components**
+- Version: Default (recommended)
+
+**Component labels:**
+| Label | Meaning | Action |
+|---|---|---|
+| Brain | Neural signal | Keep |
+| Eye | Blink artifact | Remove |
+| Muscle | Muscle noise | Remove |
+| Channel Noise | Channel artifact | Remove |
+| Other | Unclear | Review manually |
+
+**Auto-flag artifacts:**
+**Tools → Classify components using ICLabel → Flag components as artifacts**
+- Use default threshold of 0.9 (removes components with >90% probability of being artifact)
+
+**Actually remove flagged components:**
+**Tools → Remove components from data → Yes**
+
+---
+
+## 4. ERP Analysis
+
+### What is ERP?
+Event-Related Potential. EEG signals time-locked to a specific event (stimulus), averaged across trials to reveal the brain's response.
+
+### ERP Analysis Steps
+```
+1. Epoching (segment continuous data around events)
+    ↓
+2. Baseline correction
+    ↓
+3. Remove noisy epochs
+    ↓
+4. Average and compare conditions
+   (Haiku vs Senryu vs Control)
+```
+
+### Epoching Settings (ds006648)
+**Tools → Extract epochs**
+- Event type: `65282`
+- Epoch limits: `-4 11` (seconds: 4s before to 11s after stimulus)
+- Remove first 2 epochs (practice trials)
+
+> **Minimum trials for ERP:** At least **20–30 trials per condition** recommended. A 10-minute trimmed dataset may not have enough trials — suitable for practice only.
+
+---
+
+## 5. Key Concepts
+
+### Scale in the Channel Scroll View
+- Channel labels (Fp1, AF7...) = fixed position markers, never move
+- Waveforms = actual voltage values, change with scale
+- Scale too large → waveforms appear flat
+- Scale too small → waveforms overlap
+- Recommended starting value: **~400**
+
+### Why visualize raw data before preprocessing?
+To assess data quality before committing to preprocessing:
+- Half the channels flat → recording failed → data may be unusable
+- Excessive noise throughout → preprocessing may not salvage it
+- Helps plan the preprocessing strategy
+
+### Why channel locations are essential
+Channel locations define where each electrode sits on the scalp (3D coordinates). Without them, EEGLAB cannot perform ICA, plot topographies, or apply re-referencing.
+
+---
+
+## 6. Common Problems & Solutions
+
+| Problem | Cause | Solution |
+|---|---|---|
+| Filtering error: "Index exceeds array elements" | No channel locations loaded | Add channel locations first |
+| Channel locations: No (labels only) | Channel count mismatch (70 vs 64) | Remove EXG channels before loading .loc file |
+| Menus unclickable | Processing in background or hidden popup | Check Activity Monitor; check Window menu for hidden dialogs |
+| ICA takes too long | Large data + runica algorithm | Use picard algorithm or trim data first |
+| Homebrew install fails | Insufficient disk space | Install AWS CLI via direct .pkg installer |
+| Reference shows "unknown" | ICA interrupted mid-run corrupted metadata | Re-run re-referencing step |
+
+---
+
+*Written: June 2026*
+*Dataset: OpenNeuro ds006648 — Poetry Assessment EEG Dataset 1*
+*Tool: EEGLAB v2026.0.0 (Standalone) on macOS*
+
