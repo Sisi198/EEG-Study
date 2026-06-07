@@ -791,6 +791,7 @@ Before performing Epoching (slicing the continuous data into trial-by-trial segm
  
 <img width="1292" height="836" alt="Screenshot 2026-06-07 at 1 56 46 pm" src="https://github.com/user-attachments/assets/afcd4ebf-93fb-40ff-83e9-85d0f8d85f76" />
 
+$\rightarrow$ Check the green part
 
 ### Curiosity: Do I have to check all 213 events one by one? Or is there a search option?
 
@@ -804,5 +805,23 @@ The Easier Method: Open the events.tsv file with Excel
 
 * Once opened, look at the value or trial_type columns. You will be able to instantly identify which specific codes correspond to the Haiku, Senryu, and Control conditions
 
+$\rightarrow$
+
+* Since there is no trial_type column available in this specific spreadsheet, you need to look at the dataset's README file or the eeg.json file to find the decoding legend provided by the authors **Turns out** Preprocessing.m file contains such data (More specific details on finding the trigger's event code are available in the Branch: openNeuro_dataset_prac)
+
+
+<img width="1574" height="854" alt="Screenshot 2026-06-07 at 3 58 24 pm" src="https://github.com/user-attachments/assets/f6b498a6-4b8c-4970-a720-f1f5d6d2b51c" />
+
+<img width="1290" height="830" alt="Screenshot 2026-06-07 at 3 58 12 pm" src="https://github.com/user-attachments/assets/d3498780-ea0e-42a0-b913-ee59a703161d" />
+
+* eventCode = 65282
+* epochDuration = 15  % 4 seconds before, 11 seconds after
+* epochOffset = 4
+
+  - eventCode = 65282: The target trigger code used to slice the continuous data. EEGLAB will locate every instance where this specific marker occurs.
+  
+  - epochDuration = 15: The total time window (duration) for each sliced segment, which spans exactly 15 seconds in total.
+  
+  - epochOffset = 4: The pre-stimulus baseline window, set to 4 seconds before the trigger onset.
 
 
