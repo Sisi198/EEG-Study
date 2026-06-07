@@ -559,7 +559,8 @@ $\rightarrow$ Make the scale into 300 - 500, make it 400
 
 <img width="1476" height="912" alt="Screenshot 2026-05-31 at 3 22 44 pm" src="https://github.com/user-attachments/assets/0f8c7cc7-8efd-4336-9cb5-5e697f7007d6" />
 
-<img width="1004" height="1232" alt="Screenshot 2026-05-31 at 3 23 13 pm" src="https://github.com/user-attachments/assets/171e7f44-112f-402c-8c46-12f34b3192f7" />
+<img width="1014" height="1208" alt="Screenshot 2026-06-05 at 5 24 25 pm" src="https://github.com/user-attachments/assets/99bf94fc-ac51-46a3-b6da-634749cf639d" />
+
 
 ## Curiosity: Parameter Breakdown
 
@@ -689,5 +690,79 @@ Takes quite of the time.
 ## When this screen pops up, don't press anything. Leave it.
 
 <img width="650" height="324" alt="Screenshot 2026-05-31 at 4 54 48 pm" src="https://github.com/user-attachments/assets/e073077a-7e73-4c40-b52e-7d57a7bb55e5" />
+
+### When it's done, it changes into 'yes' (Look up the section called ICA weights)
+
+<img width="1102" height="716" alt="Screenshot 2026-06-05 at 6 31 22 pm" src="https://github.com/user-attachments/assets/82a77fd7-3d98-4212-8460-2768028d9b6d" />
+
+
+# Classify components using ICLabel
+
+* Tools → Classify components using ICLabel
+
+<img width="1674" height="960" alt="Screenshot 2026-06-05 at 6 33 43 pm" src="https://github.com/user-attachments/assets/7f1d422d-b237-484f-9b9a-50c155559f5b" />
+
+<img width="524" height="390" alt="Screenshot 2026-06-05 at 6 34 02 pm" src="https://github.com/user-attachments/assets/e1e7b8b7-7d5a-4f22-ad6f-ae32aaec427a" />
+
+$\rightarrow$ Click the Default
+
+<img width="802" height="546" alt="Screenshot 2026-06-05 at 6 34 27 pm" src="https://github.com/user-attachments/assets/96d052fb-81f6-4989-8579-9a99c2b7b5db" />
+
+# Understanding the ICLabel Grid
+
+<img width="1596" height="1166" alt="Screenshot 2026-06-05 at 6 36 23 pm" src="https://github.com/user-attachments/assets/a44563ac-c31f-44d3-8e9f-c455634c535e" />
+
+<img width="1582" height="1498" alt="Screenshot 2026-06-05 at 6 36 18 pm" src="https://github.com/user-attachments/assets/8e153e0b-5136-4351-a3c9-3fba7b1bb3fe" />
+
+* Each circular plot (scalp topography) represents an individual ICA component. The algorithm has successfully decomposed your continuous 64-channel EEG data into 62 independent, non-overlapping signal sources.
+
+* Brian : Genuine neural activity - KEEP
+
+* Eye : Ocular artifacts (Blinks, vertical/horizontal eye movements) - Remove
+
+* Muscle : electormyographic noise (Jaw clenching, neck muscle tension) - Remove
+
+* Channel noise : Isolated bad electrode connection jitter - Remove
+
+* Other : Ambigous or mixed source signals - Review / Keep
+
+## Components identified for rejection in this Data:
+
+* Components 1 & 2: Classified as Eye (99.9%) $\rightarrow$ Classic vertical eye-blink profiles. Definite removal.
+  
+* Component 35: Classified as Eye (67.8%) $\rightarrow$ Likely a residual eye movement. Definite removal.
+  
+* Component 23: Classified as Channel Noise (95.6%) $\rightarrow$ High variance limited to a single sensor. Definite removal.
+
+* Component 42: Classified as Muscle (84.6%) $\rightarrow$ High-frequency bursts typical of localized tension. Definite removal.
+
+* Component 31: Classified as Muscle (42.0%) $\rightarrow$ Ambiguous distribution under the 80% threshold; safely kept for now.
+
+# Automating the Cleanup
+
+* Tools $\rightarrow$ Classify components using ICLabel $\rightarrow$ Flag components as artifacts
+
+<img width="1784" height="914" alt="Screenshot 2026-06-07 at 11 23 31 am" src="https://github.com/user-attachments/assets/f1b561c7-4e9d-4b9d-aa11-d484ff888ebe" />
+
+<img width="748" height="788" alt="Screenshot 2026-06-07 at 11 25 28 am" src="https://github.com/user-attachments/assets/2ccd571e-b8c9-4fb8-8bc5-3bca29acc1ed" />
+
+<img width="1090" height="882" alt="Screenshot 2026-06-07 at 11 34 02 am" src="https://github.com/user-attachments/assets/2c2e9620-8b73-4e28-b817-7daa59a435ff" />
+
+<img width="854" height="540" alt="Screenshot 2026-06-07 at 11 31 40 am" src="https://github.com/user-attachments/assets/7f71d8b1-fd43-4c53-a94b-aeb4a1193564" />
+
+$\rightarrow$ Click Yes
+
+<img width="1280" height="348" alt="Screenshot 2026-06-07 at 11 32 48 am" src="https://github.com/user-attachments/assets/bf89abd1-c007-441a-a2ca-0e66d34eb1aa" />
+
+$\rightarrow$ Click Accept
+
+## After cleaning: 
+
+<img width="1598" height="1094" alt="Screenshot 2026-06-07 at 11 35 42 am" src="https://github.com/user-attachments/assets/87755419-1ed4-4ab0-8b62-9f723ac1b14a" />
+
+
+### Before cleaning the channel data looks like this: 
+<img width="2034" height="1390" alt="Screenshot 2026-06-07 at 11 36 33 am" src="https://github.com/user-attachments/assets/5ad21906-4ba4-4d7d-bc20-4bdb1bd59bb2" />
+
 
 
