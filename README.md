@@ -761,8 +761,48 @@ $\rightarrow$ Click Accept
 <img width="1598" height="1094" alt="Screenshot 2026-06-07 at 11 35 42 am" src="https://github.com/user-attachments/assets/87755419-1ed4-4ab0-8b62-9f723ac1b14a" />
 
 
-### Before cleaning the channel data looks like this: 
+### Before cleaning, channel data looks like this: 
 <img width="2034" height="1390" alt="Screenshot 2026-06-07 at 11 36 33 am" src="https://github.com/user-attachments/assets/5ad21906-4ba4-4d7d-bc20-4bdb1bd59bb2" />
+
+
+# ERP Analysis 
+
+## Verify the Event Markers
+
+Before performing Epoching (slicing the continuous data into trial-by-trial segments), you must identify the exact trigger codes used to mark the stimulus presentation times in the dataset
+
+* Edit $\rightarrow$ Event value
+
+<img width="992" height="674" alt="Screenshot 2026-06-07 at 11 39 29 am" src="https://github.com/user-attachments/assets/b6504ee8-cc81-4e9a-b5e4-d8d882d01c32" />
+
+* 213 events recorded
+  
+* The first one is labelled 65284
+
+## Check More Event Codes
+
+* Please click the > (next) button a few times in that window to see what other numeric trigger codes appear throughout the recording.
+
+* According to the ds006648 dataset documentation:
+
+  - 65285, 65286: Baseline metrics (Pre-experiment Resting State)
+  
+  - 65287, 65288: Fatigue control metrics (Post-experiment Resting State)
+ 
+<img width="1292" height="836" alt="Screenshot 2026-06-07 at 1 56 46 pm" src="https://github.com/user-attachments/assets/afcd4ebf-93fb-40ff-83e9-85d0f8d85f76" />
+
+
+### Curiosity: Do I have to check all 213 events one by one? Or is there a search option?
+
+A: 
+
+The Easier Method: Open the events.tsv file with Excel
+
+
+<img width="1800" height="808" alt="Screenshot 2026-06-07 at 2 11 55 pm" src="https://github.com/user-attachments/assets/7718e783-c976-45fe-8313-b7f12ecf905e" />
+<img width="2272" height="1488" alt="Screenshot 2026-06-07 at 2 11 31 pm" src="https://github.com/user-attachments/assets/640001c9-ad1e-4ea2-aec3-eae801c8c79a" />
+
+* Once opened, look at the value or trial_type columns. You will be able to instantly identify which specific codes correspond to the Haiku, Senryu, and Control conditions
 
 
 
