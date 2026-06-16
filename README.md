@@ -824,4 +824,5 @@ $\rightarrow$
   
   - epochOffset = 4: The pre-stimulus baseline window, set to 4 seconds before the trigger onset.
 
+# Step 1. Epoching
 
