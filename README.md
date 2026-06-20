@@ -822,6 +822,7 @@ $\rightarrow$
 
 ## Error occurs:
 <img width="1308" height="986" alt="Screenshot 2026-06-16 at 2 15 51 pm" src="https://github.com/user-attachments/assets/54081ecb-8b53-4769-91b6-b4fb37980edb" />
+<img width="1236" height="718" alt="image" src="https://github.com/user-attachments/assets/bf0b3805-c9bf-4a52-bb78-166a0cace548" />
 
 ### $\rightarrow$ Possible Causes
 The current dataset duration is down to 392.76 seconds (approximately 6.5 minutes). When trying to extract a 15-second epoch window (from -4 seconds to +11 seconds) around the 65282 trigger, two things might have happened:
@@ -829,3 +830,316 @@ The current dataset duration is down to 392.76 seconds (approximately 6.5 minute
 The Edge Effect: If the very last 65282 event occurs within 11 seconds of the actual end of the recording file, EEGLAB cannot capture the full window and will drop that incomplete epoch entirely.
 
 Missing Triggers: Because the automated ASR (Artifact Subspace Reconstruction) cleaning stage previously cut out heavily contaminated blocks of continuous data, it is possible that the specific segments containing the 65282 triggers were stripped out completely during that process.
+
+
+## resolve the issue by epoching the total data
+
+<img width="1286" height="664" alt="Screenshot 2026-06-20 at 5 30 17 pm" src="https://github.com/user-attachments/assets/8b285f8d-cc08-4091-8641-05e3affa237e" />
+
+
+# step 2. Baseline Correction
+
+* Tools → Remove baseline
+
+<img width="1288" height="766" alt="Screenshot 2026-06-20 at 5 30 59 pm" src="https://github.com/user-attachments/assets/b5c0d209-a4cb-4e30-8bf2-f731c4524755" />
+<img width="1282" height="760" alt="Screenshot 2026-06-20 at 5 31 18 pm" src="https://github.com/user-attachments/assets/17da77fc-bae3-4b5f-9d19-98c0833ab83c" />
+
+# step 3. visualising ERP
+
+* Plot → Channel ERPs → With scalp maps or Plot → Channel ERPs → In rectangular array
+
+<img width="1284" height="748" alt="Screenshot 2026-06-20 at 5 34 28 pm" src="https://github.com/user-attachments/assets/6d0a298b-023b-4c84-8520-3b1e5d89da20" />
+<img width="890" height="512" alt="Screenshot 2026-06-20 at 5 37 42 pm" src="https://github.com/user-attachments/assets/b6dba1ed-76cc-4443-acfe-0233d9ecfbfc" />
+<img width="1270" height="1058" alt="Screenshot 2026-06-20 at 5 35 47 pm" src="https://github.com/user-attachments/assets/2fb5f395-6126-4508-8ec8-cc0b9bd5f34b" />
+$\rightarrow$ with scalp maps
+
+<img width="1308" height="1062" alt="Screenshot 2026-06-20 at 5 39 03 pm" src="https://github.com/user-attachments/assets/634c931e-d813-419f-861e-bb935f103d9f" />
+$\rightarrow$ in a rectangular array
+
+Instead of looking at all the electrodes at once, go back to Plot $\rightarrow$ Channel ERPs $\rightarrow$ In rectangular array. This time, it will be much clearer if we isolate a few key midline channels (e.g., Fz, Cz, Pz, Oz) to view them at a larger scale.
+
+EX:
+
+<img width="1940" height="1460" alt="Screenshot 2026-06-20 at 5 54 23 pm" src="https://github.com/user-attachments/assets/046d56a1-54b3-4a73-9b7f-ea1555b88b90" />
+
+
+either  
+
+a. Plot → Channel ERPs → In rectangular array
+
+<img width="854" height="554" alt="Screenshot 2026-06-20 at 5 45 47 pm" src="https://github.com/user-attachments/assets/93d63469-6d07-4f3d-99a5-bff7f5585ca7" />
+
+b. Utilise the Existing Plot Window: click on any of these small individual channel graphs with the mouse, and EEGLAB will pop open a dedicated window magnifying that specific channel's ERP waveform
+
+
+## Curioisity. If I am analysing my own data, how do I actually know which brain regions or channels to look at?
+
+1. Look at the "Prior Literature" (The Golden Rule)
+
+* EEG research relies heavily on established neural components. Decades of previous experiments tell us exactly where specific cognitive processes show up on the scalp. Since our dataset is about reading language and poetry, you look at the regions established by past linguistic studies:
+
+    The N400 Component (Semantic Processing): When people process the meaning of words, sentences, or unexpected metaphors, a negative wave peaks around 400ms. Prior literature states this is strongest over Centro-Parietal channels (Cz, Pz, CPz).
+    
+    The P600 Component (Syntactic Processing): If a sentence has a grammatical twist or a complex structural shift (common in poetry like Haiku), a positive wave peaks around 600ms. This is typically observed over the Parieto-Occipital channels (Pz, POz).
+
+* The Strategy: Before you even open EEGLAB, you read papers on similar topics, see which channels the authors analysed, and look at those exact same channels in your data.
+
+2. Referring to the Dataset's Native Literature/Documentation
+
+* If the researchers who compiled this specific dataset have published a peer-reviewed paper, they will explicitly state their exact analytical choices in the Methods or Results section—for example: "We focused our primary statistical analysis around the midline channels Pz and Fz."
+
+3. Targeting Specific ERP Components (Hypothesis-Driven Approach)
+   
+* EEG and cognitive neuroscience tracking rely heavily on well-characterised, established ERP components. If you have a clear hypothesis about a task, you look at the exact scalp regions where those electrical signatures are known to manifest:
+
+  1. N400	Semantic processing, metaphor integration, unexpected word context.	Centro-Parietal (Cz, Pz)
+  2. P600	Syntactic anomalies, structural re-evaluation, complex parsing.	Parietal (Pz)
+  3. LPP (Late Positive Potential)	Sustained emotional arousal, aesthetic evaluation, motivational salience.	Centro-Parietal (Cz, Pz, CPz)
+ 
+# Because this paradigm involves reading poetic text (Haiku vs. Senryu), this prac data's study is highly likely to look at:
+
+    * The N400 to measure how the brain processes deep, metaphorical poetic imagery.
+    
+    * The LPP to measure the emotional impact or aesthetic appeal ("Being Moved") of the verses.
+
+
+
+<img width="1988" height="1442" alt="Screenshot 2026-06-20 at 6 13 03 pm" src="https://github.com/user-attachments/assets/700b19e4-2b35-413f-ab3b-0a29aa39b891" />
+<img width="1968" height="1472" alt="Screenshot 2026-06-20 at 6 13 38 pm" src="https://github.com/user-attachments/assets/5650cf71-5355-446e-b299-766e902a820c" />
+<img width="1990" height="1452" alt="Screenshot 2026-06-20 at 6 13 13 pm" src="https://github.com/user-attachments/assets/dcd2ff9b-5799-4547-b32c-58da5a242dcc" />
+
+
+* Understanding the Grid Structure: 
+  
+  * X-Axis (Time, ms): Spans from -4000 to 10998 ms.
+  
+  * Y-Axis (Potential, µV): Fluctuates between roughly -6 and +6 µV.
+  
+  * Vertical Black Line (0 ms mark): The exact onset moment when the text stimulus flashed on the screen.
+    
+      1. Left of the line (-4000 to 0 ms): The Baseline period before the text appears.
+      
+      2. Right of the line (0 to 10998 ms): The Post-Stimulus window where the participant reads and evaluates the text.
+   
+<img width="1988" height="1442" alt="Screenshot 2026-06-20 at 6 13 03 pm" src="https://github.com/user-attachments/assets/4d1698e2-46e1-4935-b420-0452ba023daa" />
+<img width="1990" height="1452" alt="Screenshot 2026-06-20 at 6 13 13 pm" src="https://github.com/user-attachments/assets/a94e2e68-6323-4b3d-982f-b5d6c8d2ef39" />
+<img width="1968" height="1472" alt="Screenshot 2026-06-20 at 6 13 38 pm" src="https://github.com/user-attachments/assets/ce466692-a399-4243-8aca-d34b95a87740" />
+
+* Identifying Waveform Patterns:
+
+    * Baseline Period (Left): The signal moves smoothly and quietly around the 0 µV mark, indicating a stable, calm state before presentation.
+
+    * Post-Stimulus Period (Right):
+        * Around 0 to 500 ms: We see an initial positive deflection peaking near +2.5 µV before dipping back down.
+        * Subsequent Window: The track maintains a steady, low-amplitude oscillation for over 10 seconds as the participant actively reads through the text line by line.
+        * Around 5000 ms: There is another distinct, larger wave cycle fluctuating up and down.
+
+* Common Patterns Shared Across All Three Channels:
+
+  * Latency Mark - Around 400 ms:
+
+    1. Fz (Frontal): Prominent positive peak ($+4\ \mu\text{V}$)
+   
+    2. Cz (Central): Subtle positive deflection ($+2.8\ \mu\text{V}$)
+    
+    3. Pz (Parietal): Subtle positive deflection
+
+  * Latency Mark - Around 700 ms:
+ 
+    1. Fz (Frontal): Positive peak ($+3\ \mu\text{V}$)
+   
+    2. Cz (Central): Moderate peak ($+1.3\ \mu\text{V}$)
+    
+    3. Pz (Parietal): Prominent positive peak ($+3.2\ \mu\text{V}$)
+   
+  * Latency Mark - Around 5200 ms:
+    
+    1. Fz (Frontal): Clear positive peak ($+3\ \mu\text{V}$)
+   
+    2. Cz (Central): Large positive peak ($+3.2\ \mu\text{V}$)
+    
+    3. Pz (Parietal): Clear positive peak ($+2.7\ \mu\text{V}$)
+   
+### What We Have Learned at This Stage:
+
+  1. Core ERP Literacy: Mastering how to reference waveforms against the 0 ms onset mark and baseline adjustments.
+    
+  2. Scale Calibration: Gaining an intuitive feel for voltage variance amplitudes (knowing that $\pm$2 to 3 µV is standard for processed scalp potentials).
+
+  3. Scientific Scepticism: Recognising that analysing a single pooled average is never enough to determine if an experimental effect exists.
+
+#### Curiosity 1. Is there a "standard guideline" for $\mu\text{V}$ amplitude sizes?
+
+While there is no absolute, concrete rule for what constitutes a "large" or "small" voltage deflection, researchers generally share an intuitive calibration scale:
+
+Amplitude Size    |         Common Interpretation
+
+0–1 μV            |        Very close to baseline noise floor; highly uncertain if it represents a meaningful cognitive signature.
+
+1–3 μV            |       "The Standard Range. Typical amplitude size for robust ERP components like the N400, P300, or LPP."
+
+3–5 μV+           |       "An exceptionally strong neural reaction, or potentially a residual, uncorrected artifact (like a micro-blink or jaw clench)."
+
+
+#### $\rightarrow$ Determine significance by comparing how much a wave deflects relative to its pre-stimulus baseline and whether the amplitude variance between experimental conditions tracks as statistically significant.
+
+#### Curiosity 2-1. Why does the display limit cut off right around $10000\text{ ms}$?
+
+#### $\rightarrow$ When we executed the epoching tool in the previous step, we explicitly configured the time limits to -4 11. 
+
+#### Curiosity 2-2. Why do we intentionally slice the data into shorter segments?
+
+1. Reason 1: We want to focus on the "immediate response"
+
+  * Our core research question is: "How does the brain respond the moment someone starts reading a Haiku?" The answer to that question is completely contained within the first few seconds following the stimulus presentation. Whatever happens after that initial window—such as continuing to read the text, processing it deeply, or completing the rating task—represents a completely different category of cognitive processing, rather than the "initial response."
+
+
+2. Reason 2: Trials must be the "exact same length" to calculate an average
+ 
+  * Calculating an ERP requires averaging multiple trials together. However, the time a participant spends reading or evaluating text can vary heavily from trial to trial—some people read faster, and certain texts are longer than others.
+
+    * Trial 1: Reading for 8 seconds + Evaluating for 5 seconds = 13 seconds total
+    
+    * Trial 2: Reading for 6 seconds + Evaluating for 7 seconds = 13 seconds total
+
+3. Reason 3: Reducing data size for efficient processing
+   
+  * Isolating just 15 seconds per trial significantly reduces the overall file size. This makes computation much faster and allows us to focus our computing resources entirely on the critical time window we actually care about.
+
+# Therefore, we need to investigate the stimulus types, blocks, and trials
+
+## Step 1.
+  * Take the total 212 trials.
+## Step 2. 
+  * Split them systematically by condition $\rightarrow$ Average the ~70 Haiku trials vs. Average the ~70 Senryu trials vs. Average the ~70 Control trials.
+## Step 3. 
+  * Overlay these three separate waveform lines onto a single ERP graph.
+## Step 4. 
+  * Scan the timeline to identify exactly where and when the wave amplitudes diverge significantly.
+
+
+
+
+# Checking the stimuli folder to confirm the study information
+
+<img width="1580" height="1634" alt="Screenshot 2026-06-20 at 7 21 00 pm" src="https://github.com/user-attachments/assets/68aa6ec1-c46f-421d-8ab3-780a6ecceed2" />
+
+<img width="1054" height="444" alt="Screenshot 2026-06-20 at 7 23 57 pm" src="https://github.com/user-attachments/assets/61b0a33b-fe29-4454-b6aa-60c86a885faf" />
+
+<img width="1558" height="412" alt="Screenshot 2026-06-20 at 7 24 22 pm" src="https://github.com/user-attachments/assets/c57c3d1d-cd61-47c4-ba9a-7457f63fc0fd" />
+$\rightarrow$ confirmed that it contains 7 blocks
+
+<img width="1266" height="1514" alt="Screenshot 2026-06-20 at 7 25 21 pm" src="https://github.com/user-attachments/assets/f8d6de83-1671-4823-9639-e5032f724780" />
+$\rightarrow$ 
+
+PoemName: The types of individual text (e.g., Haiku / Senryu / Control)
+
+PoemType: The exact condition marker differentiating Haiku / Senryu / Control
+
+Label Initial Letters: 
+
+H $\rightarrow$ Haiku
+
+S $\rightarrow$ Senryu
+
+C $\rightarrow$ Control
+
+## Structure of the study:
+
+  * Total Trials: 7 blocks $\times$ 30 items = 210 core experimental texts.
+  
+  * Per-Block Breakdown: 10 Haiku + 10 Senryu + 10 Control trials.
+
+## The Mapping Blueprint
+
+Our current EEGLAB dataset contains 212 epochs, whereas the core text blocks account for exactly 210. This minor discrepancy confirms our hypothesis: the recording includes the 2 initial practice trials that the authors explicitly noted in Preprocessing.m ("remove first 2 epochs").
+
+
+# Step 2.
+
+1. Consolidate Blocks: Combine the sheets from Block_1.xlsx through Block_7.xlsx sequentially to build the complete 210-item condition label array.
+
+  +) Account for Practice Trials: Append 2 placeholder labels at the very beginning of the vector to align with the practice epochs.
+
+2. Map to EEGLAB: Bind this finalised sequence directly to the EEGLAB dataset epoch index.
+
+
+# More precise explanation of these steps:
+
+* Right now, EEGLAB holds 212 individual "slices" (epochs) of brainwave data. However, EEGLAB has absolutely no idea which slice belongs to which condition. 
+
+* To the software, they are just generic numbers from 1 to 212.
+
+* On the other hand, these Excel files (Block_1~7) contain the exact code ledger showing the sequence of text conditions presented during the experiment:
+
+  Excel Ledger:    [Text 1 = H]  [Text 2 = S]  [Text 3 = C] ... [Text 210 = H]
+
+* Our entire goal is to pair these two lists together sequentially like a puzzle:
+
+  Epoch 1 $\rightarrow$ Text 1 = H (Haiku)
+  
+  Epoch 2 $\rightarrow$ Text 2 = S (Senryu)
+  
+  Epoch 3 $\rightarrow$ Text 3 = C (Control)
+  
+* Once we bind this condition map to the dataset, EEGLAB will finally understand the context of each slice ("Ah, Epoch 1 was a Haiku trial!"), allowing us to calculate our conditional averages.
+
+# Metaphorical ways to explain this:
+
+Think of it like a teacher grading 212 exam papers. The students forgot to write their names on the tests and only wrote their assigned student seating numbers (1 to 212).
+
+Luckily, the teacher has a separate master attendance sheet (our Excel files) that logs exactly who sits in Seat 1, Seat 2, and so on. We are simply matching the nameless exam papers (EEGLAB epochs) with the attendance sheet (Excel data) to figure out exactly which condition belongs to which trial number.
+
+## $\rightarrow$ We are assuming that the exam papers cover the entire attendance sheet: Meaning we want to analyse Participant 1's total EEG data by slicing it up according to each block and trial. 
+
+## If I were analysing my own dataset, I would skip this decoding process: The exact sequence of which trial belongs to which condition is already logged automatically by your presentation software (e.g., PsychoPy, E-Prime, or OpenSesame) inside a native structured .csv or .log file.
+
+# Step 3. Merge the 7 Excel Files
+
+[EEGLAB_Epoch_to_PoemType.xlsx](https://github.com/user-attachments/files/29159978/EEGLAB_Epoch_to_PoemType.xlsx)
+
+
+# Step 4. Inject these labels directly into EEGLAB.
+
+* Strategy: Creating Separate Datasets by Condition
+
+  Current Dataset (212 epochs)
+   │
+   ├──► Extract only 'H' epochs ──► "Haiku Dataset" (70 epochs)
+   ├──► Extract only 'S' epochs ──► "Senryu Dataset" (70 epochs)
+   └──► Extract only 'C' epochs ──► "Control Dataset" (70 epochs)
+   │
+   └──► Superimpose and compare the ERPs of these three distinct datasets
+
+  1: Identify the Epoch Numbers for Each Condition
+
+  2: Extracting the 'H' (Haiku) Dataset in EEGLAB
+
+    [3 4 5 6 7 8 9 10 11 12 33 34 35 36 37 38 39 40 41 42 63 64 65 66 67 68 69 70 71 72 93 94 95 96 97 98 99 100 101 102 123 124 125 126 127 128 129 130 131 132 153 154 155 156 157 158 159 160 161 162 183 184 185 186 187 188 189 190 191 192]
+
+  <img width="1322" height="946" alt="Screenshot 2026-06-20 at 8 02 07 pm" src="https://github.com/user-attachments/assets/cdd89a94-f062-4726-84e4-dc544134134d" />
+  <img width="1272" height="774" alt="Screenshot 2026-06-20 at 8 06 12 pm" src="https://github.com/user-attachments/assets/ef892848-a385-42c2-953c-52660c269377" />
+  <img width="1268" height="666" alt="Screenshot 2026-06-20 at 8 07 20 pm" src="https://github.com/user-attachments/assets/7c65ee16-cb16-42bb-a582-41c3f62c4b1a" />
+  <img width="1472" height="1134" alt="Screenshot 2026-06-20 at 8 47 30 pm" src="https://github.com/user-attachments/assets/046a1b1f-5cf3-45ee-8fa5-fb21944d4c53" />
+
+  3: Extracting the 'S' (Senryu) Dataset in EEGLAB
+
+
+    Go back to original dataset $\rightarrow$ Edit → Select data → Epoch range:
+  
+    [13 14 15 16 17 18 19 20 21 22 43 44 45 46 47 48 49 50 51 52 73 74 75 76 77 78 79 80 81 82 103 104 105 106 107 108 109 110 111 112 133 134 135 136 137 138 139 140 141 142 163 164 165 166 167 168 169 170 171 172 193 194 195 196 197 198 199 200 201 202]
+
+  <img width="1288" height="754" alt="Screenshot 2026-06-20 at 8 48 36 pm" src="https://github.com/user-attachments/assets/3079c977-2b88-4eba-b63e-c5ed6cb2655e" />
+  <img width="1316" height="1104" alt="Screenshot 2026-06-20 at 8 49 21 pm" src="https://github.com/user-attachments/assets/a6a72a1f-8267-47f9-bbc3-be57f2f8d37c" />
+
+
+  4: Extracting the 'C' (Control) Dataset in EEGLAB
+
+  [23 24 25 26 27 28 29 30 31 32 53 54 55 56 57 58 59 60 61 62 83 84 85 86 87 88 89 90 91 92 113 114 115 116 117 118 119 120 121 122 143 144 145 146 147 148 149 150 151 152 173 174 175 176 177 178 179 180 181 182 203 204 205 206 207 208 209 210 211 212]
+
+  <img width="1300" height="660" alt="Screenshot 2026-06-20 at 8 56 28 pm" src="https://github.com/user-attachments/assets/383c3155-a554-40ae-9dae-0c5c35b9e0e7" />
+  <img width="1418" height="1156" alt="Screenshot 2026-06-20 at 8 56 12 pm" src="https://github.com/user-attachments/assets/56bd40f6-02aa-4077-afc8-b1a86527d3fe" />
+
+
+  
+
