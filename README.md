@@ -1141,5 +1141,16 @@ Luckily, the teacher has a separate master attendance sheet (our Excel files) th
   <img width="1418" height="1156" alt="Screenshot 2026-06-20 at 8 56 12 pm" src="https://github.com/user-attachments/assets/56bd40f6-02aa-4077-afc8-b1a86527d3fe" />
 
 
+# Compare Pz in each of the 3 datasets
+
+<img width="1688" height="1176" alt="Screenshot 2026-06-20 at 8 26 09 pm 2" src="https://github.com/user-attachments/assets/f702eda5-5ab5-4fc0-a307-ed6546c9ef98" />
+<img width="1894" height="1312" alt="Screenshot 2026-06-20 at 8 25 33 pm 2" src="https://github.com/user-attachments/assets/87a1dfc2-0f62-4982-9ef7-687eeda3c975" />
+<img width="2016" height="1092" alt="Screenshot 2026-06-20 at 8 24 52 pm 2" src="https://github.com/user-attachments/assets/58bce400-e9a2-4d61-93da-eb7a1c127253" />
+
+
+# What I've done so far:
+
+<img width="902" height="736" alt="Screenshot 2026-06-20 at 9 07 41 pm" src="https://github.com/user-attachments/assets/16e6682b-0eee-440a-afd2-c32436570969" />
+
   
 
