@@ -1154,3 +1154,706 @@ Luckily, the teacher has a separate master attendance sheet (our Excel files) th
 
  
 
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOf2pBfHBFeL1UwTzHn12Sg",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Sisi198/EEG-Study/blob/main/Untitled0.ipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 974
+        },
+        "id": "T8DcfR34JLJ8",
+        "outputId": "ea898028-2927-4545-ac44-e4564ae9ec1c"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Collecting mne\n",
+            "  Downloading mne-1.12.1-py3-none-any.whl.metadata (16 kB)\n",
+            "Collecting python-picard\n",
+            "  Downloading python_picard-0.8.2-py3-none-any.whl.metadata (5.9 kB)\n",
+            "Collecting decorator>=5.1 (from mne)\n",
+            "  Downloading decorator-5.3.1-py3-none-any.whl.metadata (3.9 kB)\n",
+            "Requirement already satisfied: jinja2>=3.1 in /usr/local/lib/python3.12/dist-packages (from mne) (3.1.6)\n",
+            "Requirement already satisfied: lazy-loader>=0.3 in /usr/local/lib/python3.12/dist-packages (from mne) (0.5)\n",
+            "Requirement already satisfied: matplotlib>=3.8 in /usr/local/lib/python3.12/dist-packages (from mne) (3.10.0)\n",
+            "Requirement already satisfied: numpy<3,>=1.26 in /usr/local/lib/python3.12/dist-packages (from mne) (2.0.2)\n",
+            "Requirement already satisfied: packaging in /usr/local/lib/python3.12/dist-packages (from mne) (26.2)\n",
+            "Requirement already satisfied: pooch>=1.5 in /usr/local/lib/python3.12/dist-packages (from mne) (1.9.0)\n",
+            "Requirement already satisfied: scipy>=1.13 in /usr/local/lib/python3.12/dist-packages (from mne) (1.16.3)\n",
+            "Requirement already satisfied: tqdm>=4.66 in /usr/local/lib/python3.12/dist-packages (from mne) (4.67.3)\n",
+            "Requirement already satisfied: scikit-learn in /usr/local/lib/python3.12/dist-packages (from python-picard) (1.6.1)\n",
+            "Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.12/dist-packages (from jinja2>=3.1->mne) (3.0.3)\n",
+            "Requirement already satisfied: contourpy>=1.0.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (1.3.3)\n",
+            "Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (0.12.1)\n",
+            "Requirement already satisfied: fonttools>=4.22.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (4.63.0)\n",
+            "Requirement already satisfied: kiwisolver>=1.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (1.5.0)\n",
+            "Requirement already satisfied: pillow>=8 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (11.3.0)\n",
+            "Requirement already satisfied: pyparsing>=2.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (3.3.2)\n",
+            "Requirement already satisfied: python-dateutil>=2.7 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (2.9.0.post0)\n",
+            "Requirement already satisfied: platformdirs>=2.5.0 in /usr/local/lib/python3.12/dist-packages (from pooch>=1.5->mne) (4.10.0)\n",
+            "Requirement already satisfied: requests>=2.19.0 in /usr/local/lib/python3.12/dist-packages (from pooch>=1.5->mne) (2.32.4)\n",
+            "Requirement already satisfied: joblib>=1.2.0 in /usr/local/lib/python3.12/dist-packages (from scikit-learn->python-picard) (1.5.3)\n",
+            "Requirement already satisfied: threadpoolctl>=3.1.0 in /usr/local/lib/python3.12/dist-packages (from scikit-learn->python-picard) (3.6.0)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.7->matplotlib>=3.8->mne) (1.17.0)\n",
+            "Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (3.4.9)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (3.18)\n",
+            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (2.5.0)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (2026.6.17)\n",
+            "Downloading mne-1.12.1-py3-none-any.whl (7.5 MB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m7.5/7.5 MB\u001b[0m \u001b[31m37.5 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hDownloading python_picard-0.8.2-py3-none-any.whl (16 kB)\n",
+            "Downloading decorator-5.3.1-py3-none-any.whl (10 kB)\n",
+            "Installing collected packages: decorator, python-picard, mne\n",
+            "  Attempting uninstall: decorator\n",
+            "    Found existing installation: decorator 4.4.2\n",
+            "    Uninstalling decorator-4.4.2:\n",
+            "      Successfully uninstalled decorator-4.4.2\n",
+            "\u001b[31mERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n",
+            "ipython 7.34.0 requires jedi>=0.16, which is not installed.\n",
+            "moviepy 1.0.3 requires decorator<5.0,>=4.0.2, but you have decorator 5.3.1 which is incompatible.\u001b[0m\u001b[31m\n",
+            "\u001b[0mSuccessfully installed decorator-5.3.1 mne-1.12.1 python-picard-0.8.2\n"
+          ]
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "application/vnd.colab-display-data+json": {
+              "pip_warning": {
+                "packages": [
+                  "decorator"
+                ]
+              },
+              "id": "cca2636530194ffaba45ec314e9f26d6"
+            }
+          },
+          "metadata": {}
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "MNE version: 1.12.1\n",
+            "All libraries loaded!\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Install required libraries\n",
+        "!pip install mne python-picard\n",
+        "\n",
+        "import mne\n",
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "\n",
+        "print(\"MNE version:\", mne.__version__)\n",
+        "print(\"All libraries loaded!\")"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Install AWS CLI and download sub-001 data\n",
+        "!pip install awscli -q\n",
+        "\n",
+        "!aws s3 sync --no-sign-request \\\n",
+        "  s3://openneuro.org/ds006648/sub-001 \\\n",
+        "  /content/ds006648/sub-001\n",
+        "\n",
+        "print(\"Download complete!\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "d0kxSzQyJRVE",
+        "outputId": "d411e2a5-496a-4d12-e765-4a9690153df1"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m4.7/4.7 MB\u001b[0m \u001b[31m50.9 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m15.4/15.4 MB\u001b[0m \u001b[31m86.5 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m570.5/570.5 kB\u001b[0m \u001b[31m37.1 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m90.2/90.2 kB\u001b[0m \u001b[31m7.5 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25h\u001b[31mERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n",
+            "sphinx 8.2.3 requires docutils<0.22,>=0.20, but you have docutils 0.19 which is incompatible.\u001b[0m\u001b[31m\n",
+            "download: s3://openneuro.org/ds006648/sub-001/eeg/sub-001_task-readpoetry_eeg.json to ds006648/sub-001/eeg/sub-001_task-readpoetry_eeg.json\n",
+            "download: s3://openneuro.org/ds006648/sub-001/eeg/sub-001_task-readpoetry_channels.tsv to ds006648/sub-001/eeg/sub-001_task-readpoetry_channels.tsv\n",
+            "download: s3://openneuro.org/ds006648/sub-001/eeg/sub-001_task-readpoetry_events.tsv to ds006648/sub-001/eeg/sub-001_task-readpoetry_events.tsv\n",
+            "download: s3://openneuro.org/ds006648/sub-001/eeg/sub-001_task-readpoetry_eeg.set to ds006648/sub-001/eeg/sub-001_task-readpoetry_eeg.set\n",
+            "Download complete!\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Load sub-001 EEG data\n",
+        "raw = mne.io.read_raw_eeglab(\n",
+        "    '/content/ds006648/sub-001/eeg/sub-001_task-readpoetry_eeg.set',\n",
+        "    preload=True\n",
+        ")\n",
+        "\n",
+        "print(\"Data loaded!\")\n",
+        "print(f\"Duration: {raw.times[-1]:.1f} seconds\")\n",
+        "print(f\"Channels: {len(raw.ch_names)}\")\n",
+        "print(f\"Sampling rate: {raw.info['sfreq']} Hz\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 216
+        },
+        "id": "TWKNoZrPJjGY",
+        "outputId": "c9abc91b-b821-4481-9e5d-d035a32538cb"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "NameError",
+          "evalue": "name 'mne' is not defined",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+            "\u001b[0;32m/tmp/ipykernel_5148/3309642399.py\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;31m# Load sub-001 EEG data\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m raw = mne.io.read_raw_eeglab(\n\u001b[0m\u001b[1;32m      3\u001b[0m     \u001b[0;34m'/content/ds006648/sub-001/eeg/sub-001_task-readpoetry_eeg.set'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m     \u001b[0mpreload\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mTrue\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m )\n",
+            "\u001b[0;31mNameError\u001b[0m: name 'mne' is not defined"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Install required libraries\n",
+        "!pip install mne python-picard\n",
+        "\n",
+        "import mne\n",
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "\n",
+        "print(\"MNE version:\", mne.__version__)\n",
+        "print(\"All libraries loaded!\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "YQQ6Oz4IJ1xL",
+        "outputId": "7e97b527-e70a-489c-ef86-9a56c6d8e762"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: mne in /usr/local/lib/python3.12/dist-packages (1.12.1)\n",
+            "Requirement already satisfied: python-picard in /usr/local/lib/python3.12/dist-packages (0.8.2)\n",
+            "Requirement already satisfied: decorator>=5.1 in /usr/local/lib/python3.12/dist-packages (from mne) (5.3.1)\n",
+            "Requirement already satisfied: jinja2>=3.1 in /usr/local/lib/python3.12/dist-packages (from mne) (3.1.6)\n",
+            "Requirement already satisfied: lazy-loader>=0.3 in /usr/local/lib/python3.12/dist-packages (from mne) (0.5)\n",
+            "Requirement already satisfied: matplotlib>=3.8 in /usr/local/lib/python3.12/dist-packages (from mne) (3.10.0)\n",
+            "Requirement already satisfied: numpy<3,>=1.26 in /usr/local/lib/python3.12/dist-packages (from mne) (2.0.2)\n",
+            "Requirement already satisfied: packaging in /usr/local/lib/python3.12/dist-packages (from mne) (26.2)\n",
+            "Requirement already satisfied: pooch>=1.5 in /usr/local/lib/python3.12/dist-packages (from mne) (1.9.0)\n",
+            "Requirement already satisfied: scipy>=1.13 in /usr/local/lib/python3.12/dist-packages (from mne) (1.16.3)\n",
+            "Requirement already satisfied: tqdm>=4.66 in /usr/local/lib/python3.12/dist-packages (from mne) (4.67.3)\n",
+            "Requirement already satisfied: scikit-learn in /usr/local/lib/python3.12/dist-packages (from python-picard) (1.6.1)\n",
+            "Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.12/dist-packages (from jinja2>=3.1->mne) (3.0.3)\n",
+            "Requirement already satisfied: contourpy>=1.0.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (1.3.3)\n",
+            "Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (0.12.1)\n",
+            "Requirement already satisfied: fonttools>=4.22.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (4.63.0)\n",
+            "Requirement already satisfied: kiwisolver>=1.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (1.5.0)\n",
+            "Requirement already satisfied: pillow>=8 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (11.3.0)\n",
+            "Requirement already satisfied: pyparsing>=2.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (3.3.2)\n",
+            "Requirement already satisfied: python-dateutil>=2.7 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (2.9.0.post0)\n",
+            "Requirement already satisfied: platformdirs>=2.5.0 in /usr/local/lib/python3.12/dist-packages (from pooch>=1.5->mne) (4.10.0)\n",
+            "Requirement already satisfied: requests>=2.19.0 in /usr/local/lib/python3.12/dist-packages (from pooch>=1.5->mne) (2.32.4)\n",
+            "Requirement already satisfied: joblib>=1.2.0 in /usr/local/lib/python3.12/dist-packages (from scikit-learn->python-picard) (1.5.3)\n",
+            "Requirement already satisfied: threadpoolctl>=3.1.0 in /usr/local/lib/python3.12/dist-packages (from scikit-learn->python-picard) (3.6.0)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.7->matplotlib>=3.8->mne) (1.17.0)\n",
+            "Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (3.4.9)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (3.18)\n",
+            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (2.5.0)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (2026.6.17)\n",
+            "MNE version: 1.12.1\n",
+            "All libraries loaded!\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Install AWS CLI and download sub-001 data\n",
+        "!pip install awscli -q\n",
+        "\n",
+        "!aws s3 sync --no-sign-request \\\n",
+        "  s3://openneuro.org/ds006648/sub-001 \\\n",
+        "  /content/ds006648/sub-001\n",
+        "\n",
+        "print(\"Download complete!\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "H0_wEeyHKBna",
+        "outputId": "b2438dda-65c6-492a-9762-19a015dea686"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Download complete!\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Load sub-001 EEG data\n",
+        "raw = mne.io.read_raw_eeglab(\n",
+        "    '/content/ds006648/sub-001/eeg/sub-001_task-readpoetry_eeg.set',\n",
+        "    preload=True\n",
+        ")\n",
+        "\n",
+        "print(\"Data loaded!\")\n",
+        "print(f\"Duration: {raw.times[-1]:.1f} seconds\")\n",
+        "print(f\"Channels: {len(raw.ch_names)}\")\n",
+        "print(f\"Sampling rate: {raw.info['sfreq']} Hz\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "wF6Hz69cKDX-",
+        "outputId": "f6b6841a-d4e1-4e57-ee32-d761ddbb6d94"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Data loaded!\n",
+            "Duration: 6422.0 seconds\n",
+            "Channels: 70\n",
+            "Sampling rate: 512.0 Hz\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/tmp/ipykernel_5148/3309642399.py:2: RuntimeWarning: Not setting positions of 6 misc channels found in montage:\n",
+            "['EXG1', 'EXG2', 'EXG3', 'EXG4', 'EXG7', 'EXG8']\n",
+            "Consider setting the channel types to be of EEG/sEEG/ECoG/DBS/fNIRS using inst.set_channel_types before calling inst.set_montage, or omit these channels when creating your montage.\n",
+            "  raw = mne.io.read_raw_eeglab(\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Step 1. Drop EXG channels\n",
+        "raw.drop_channels(['EXG1', 'EXG2', 'EXG3', 'EXG4', 'EXG7', 'EXG8'])\n",
+        "print(f\"Channels after dropping EXG: {len(raw.ch_names)}\")\n",
+        "\n",
+        "# Step 2. Set standard montage\n",
+        "montage = mne.channels.make_standard_montage('biosemi64')\n",
+        "raw.set_montage(montage, on_missing='warn')\n",
+        "print(\"Montage set!\")\n",
+        "\n",
+        "# Step 3. Bandpass filter (1-40 Hz)\n",
+        "raw.filter(l_freq=1.0, h_freq=40.0)\n",
+        "print(\"Filtering done!\")\n",
+        "\n",
+        "# Step 4. Re-reference to average\n",
+        "raw.set_eeg_reference('average', projection=False)\n",
+        "print(\"Re-referencing done!\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "NIdFXBnuKHW-",
+        "outputId": "b498b594-1dba-40f5-f2c4-b18487efff8e"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Channels after dropping EXG: 64\n",
+            "Montage set!\n",
+            "Filtering raw data in 1 contiguous segment\n",
+            "Setting up band-pass filter from 1 - 40 Hz\n",
+            "\n",
+            "FIR filter parameters\n",
+            "---------------------\n",
+            "Designing a one-pass, zero-phase, non-causal bandpass filter:\n",
+            "- Windowed time-domain design (firwin) method\n",
+            "- Hamming window with 0.0194 passband ripple and 53 dB stopband attenuation\n",
+            "- Lower passband edge: 1.00\n",
+            "- Lower transition bandwidth: 1.00 Hz (-6 dB cutoff frequency: 0.50 Hz)\n",
+            "- Upper passband edge: 40.00 Hz\n",
+            "- Upper transition bandwidth: 10.00 Hz (-6 dB cutoff frequency: 45.00 Hz)\n",
+            "- Filter length: 1691 samples (3.303 s)\n",
+            "\n",
+            "Filtering done!\n",
+            "EEG channel type selected for re-referencing\n",
+            "Applying average reference.\n",
+            "Applying a custom ('EEG',) reference.\n",
+            "Re-referencing done!\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Install AWS CLI and download sub-001 data\n",
+        "!pip install awscli -q\n",
+        "\n",
+        "!aws s3 sync --no-sign-request \\\n",
+        "  s3://openneuro.org/ds006648/sub-001 \\\n",
+        "  /content/ds006648/sub-001\n",
+        "\n",
+        "print(\"Download complete!\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "zWxewjjkKj5X",
+        "outputId": "af8f36cc-d19b-4464-8454-8df9ed726190"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Download complete!\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Load sub-001 EEG data\n",
+        "raw = mne.io.read_raw_eeglab(\n",
+        "    '/content/ds006648/sub-001/eeg/sub-001_task-readpoetry_eeg.set',\n",
+        "    preload=True\n",
+        ")\n",
+        "\n",
+        "print(\"Data loaded!\")\n",
+        "print(f\"Duration: {raw.times[-1]:.1f} seconds\")\n",
+        "print(f\"Channels: {len(raw.ch_names)}\")\n",
+        "print(f\"Sampling rate: {raw.info['sfreq']} Hz\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 216
+        },
+        "id": "LR5173naLNq_",
+        "outputId": "2a24b1a0-f6a6-4711-b625-25ca3b6ba7fc"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "NameError",
+          "evalue": "name 'mne' is not defined",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+            "\u001b[0;32m/tmp/ipykernel_6910/3309642399.py\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;31m# Load sub-001 EEG data\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m raw = mne.io.read_raw_eeglab(\n\u001b[0m\u001b[1;32m      3\u001b[0m     \u001b[0;34m'/content/ds006648/sub-001/eeg/sub-001_task-readpoetry_eeg.set'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m     \u001b[0mpreload\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mTrue\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m )\n",
+            "\u001b[0;31mNameError\u001b[0m: name 'mne' is not defined"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Install required libraries\n",
+        "!pip install mne python-picard\n",
+        "\n",
+        "import mne\n",
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "\n",
+        "print(\"MNE version:\", mne.__version__)\n",
+        "print(\"All libraries loaded!\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Ww2P9206LXwh",
+        "outputId": "92858998-e5e8-43c9-de02-c093db7d8531"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: mne in /usr/local/lib/python3.12/dist-packages (1.12.1)\n",
+            "Requirement already satisfied: python-picard in /usr/local/lib/python3.12/dist-packages (0.8.2)\n",
+            "Requirement already satisfied: decorator>=5.1 in /usr/local/lib/python3.12/dist-packages (from mne) (5.3.1)\n",
+            "Requirement already satisfied: jinja2>=3.1 in /usr/local/lib/python3.12/dist-packages (from mne) (3.1.6)\n",
+            "Requirement already satisfied: lazy-loader>=0.3 in /usr/local/lib/python3.12/dist-packages (from mne) (0.5)\n",
+            "Requirement already satisfied: matplotlib>=3.8 in /usr/local/lib/python3.12/dist-packages (from mne) (3.10.0)\n",
+            "Requirement already satisfied: numpy<3,>=1.26 in /usr/local/lib/python3.12/dist-packages (from mne) (2.0.2)\n",
+            "Requirement already satisfied: packaging in /usr/local/lib/python3.12/dist-packages (from mne) (26.2)\n",
+            "Requirement already satisfied: pooch>=1.5 in /usr/local/lib/python3.12/dist-packages (from mne) (1.9.0)\n",
+            "Requirement already satisfied: scipy>=1.13 in /usr/local/lib/python3.12/dist-packages (from mne) (1.16.3)\n",
+            "Requirement already satisfied: tqdm>=4.66 in /usr/local/lib/python3.12/dist-packages (from mne) (4.67.3)\n",
+            "Requirement already satisfied: scikit-learn in /usr/local/lib/python3.12/dist-packages (from python-picard) (1.6.1)\n",
+            "Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.12/dist-packages (from jinja2>=3.1->mne) (3.0.3)\n",
+            "Requirement already satisfied: contourpy>=1.0.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (1.3.3)\n",
+            "Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (0.12.1)\n",
+            "Requirement already satisfied: fonttools>=4.22.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (4.63.0)\n",
+            "Requirement already satisfied: kiwisolver>=1.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (1.5.0)\n",
+            "Requirement already satisfied: pillow>=8 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (11.3.0)\n",
+            "Requirement already satisfied: pyparsing>=2.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (3.3.2)\n",
+            "Requirement already satisfied: python-dateutil>=2.7 in /usr/local/lib/python3.12/dist-packages (from matplotlib>=3.8->mne) (2.9.0.post0)\n",
+            "Requirement already satisfied: platformdirs>=2.5.0 in /usr/local/lib/python3.12/dist-packages (from pooch>=1.5->mne) (4.10.0)\n",
+            "Requirement already satisfied: requests>=2.19.0 in /usr/local/lib/python3.12/dist-packages (from pooch>=1.5->mne) (2.32.4)\n",
+            "Requirement already satisfied: joblib>=1.2.0 in /usr/local/lib/python3.12/dist-packages (from scikit-learn->python-picard) (1.5.3)\n",
+            "Requirement already satisfied: threadpoolctl>=3.1.0 in /usr/local/lib/python3.12/dist-packages (from scikit-learn->python-picard) (3.6.0)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.7->matplotlib>=3.8->mne) (1.17.0)\n",
+            "Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (3.4.9)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (3.18)\n",
+            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (2.5.0)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.12/dist-packages (from requests>=2.19.0->pooch>=1.5->mne) (2026.6.17)\n",
+            "MNE version: 1.12.1\n",
+            "All libraries loaded!\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Install AWS CLI and download sub-001 data\n",
+        "!pip install awscli -q\n",
+        "\n",
+        "!aws s3 sync --no-sign-request \\\n",
+        "  s3://openneuro.org/ds006648/sub-001 \\\n",
+        "  /content/ds006648/sub-001\n",
+        "\n",
+        "print(\"Download complete!\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Ym6Hxm92LbQO",
+        "outputId": "d43d0f9d-f70c-41b9-fd05-932be992223e"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Download complete!\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Load sub-001 EEG data\n",
+        "raw = mne.io.read_raw_eeglab(\n",
+        "    '/content/ds006648/sub-001/eeg/sub-001_task-readpoetry_eeg.set',\n",
+        "    preload=True\n",
+        ")\n",
+        "\n",
+        "print(\"Data loaded!\")\n",
+        "print(f\"Duration: {raw.times[-1]:.1f} seconds\")\n",
+        "print(f\"Channels: {len(raw.ch_names)}\")\n",
+        "print(f\"Sampling rate: {raw.info['sfreq']} Hz\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "OU62E-QiLeoV",
+        "outputId": "96e58de0-62e3-408e-f6e7-e018e882d405"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Data loaded!\n",
+            "Duration: 6422.0 seconds\n",
+            "Channels: 70\n",
+            "Sampling rate: 512.0 Hz\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/tmp/ipykernel_6910/3309642399.py:2: RuntimeWarning: Not setting positions of 6 misc channels found in montage:\n",
+            "['EXG1', 'EXG2', 'EXG3', 'EXG4', 'EXG7', 'EXG8']\n",
+            "Consider setting the channel types to be of EEG/sEEG/ECoG/DBS/fNIRS using inst.set_channel_types before calling inst.set_montage, or omit these channels when creating your montage.\n",
+            "  raw = mne.io.read_raw_eeglab(\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Step 1. Drop EXG channels\n",
+        "raw.drop_channels(['EXG1', 'EXG2', 'EXG3', 'EXG4', 'EXG7', 'EXG8'])\n",
+        "print(f\"Channels after dropping EXG: {len(raw.ch_names)}\")\n",
+        "\n",
+        "# Step 2. Set standard montage\n",
+        "montage = mne.channels.make_standard_montage('biosemi64')\n",
+        "raw.set_montage(montage, on_missing='warn')\n",
+        "print(\"Montage set!\")\n",
+        "\n",
+        "# Step 3. Bandpass filter (1-40 Hz)\n",
+        "raw.filter(l_freq=1.0, h_freq=40.0)\n",
+        "print(\"Filtering done!\")\n",
+        "\n",
+        "# Step 4. Re-reference to average\n",
+        "raw.set_eeg_reference('average', projection=False)\n",
+        "print(\"Re-referencing done!\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "LwsuTFONLi5w",
+        "outputId": "48fee298-72d5-49cd-a9a3-5329def366c0"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Channels after dropping EXG: 64\n",
+            "Montage set!\n",
+            "Filtering raw data in 1 contiguous segment\n",
+            "Setting up band-pass filter from 1 - 40 Hz\n",
+            "\n",
+            "FIR filter parameters\n",
+            "---------------------\n",
+            "Designing a one-pass, zero-phase, non-causal bandpass filter:\n",
+            "- Windowed time-domain design (firwin) method\n",
+            "- Hamming window with 0.0194 passband ripple and 53 dB stopband attenuation\n",
+            "- Lower passband edge: 1.00\n",
+            "- Lower transition bandwidth: 1.00 Hz (-6 dB cutoff frequency: 0.50 Hz)\n",
+            "- Upper passband edge: 40.00 Hz\n",
+            "- Upper transition bandwidth: 10.00 Hz (-6 dB cutoff frequency: 45.00 Hz)\n",
+            "- Filter length: 1691 samples (3.303 s)\n",
+            "\n",
+            "Filtering done!\n",
+            "EEG channel type selected for re-referencing\n",
+            "Applying average reference.\n",
+            "Applying a custom ('EEG',) reference.\n",
+            "Re-referencing done!\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Step 5. ICA\n",
+        "from mne.preprocessing import ICA\n",
+        "\n",
+        "ica = ICA(n_components=63, method='picard', random_state=42)\n",
+        "ica.fit(raw)\n",
+        "\n",
+        "print(\"ICA done!\")\n",
+        "print(ica)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "SnKmSbUyLpUY",
+        "outputId": "0485aac4-0e0f-4e59-df63-140d42066622"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Fitting ICA to data using 64 channels (please be patient, this may take a while)\n",
+            "Selecting by number: 63 components\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "Rmlyl4hjL2Ya"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
