@@ -438,7 +438,7 @@ save('-mat', 'fake_eeg.mat', 'eegdata');
 
 
 
-# Sample practice challenge
+# Existing EEG study data practice challenge
 
 Reference: Soma Chaudhuri and Joydeep Bhattacharya (2025). Poetry Assessment EEG Dataset 1. OpenNeuro. [Dataset] doi: doi:10.18112/openneuro.ds006648.v1.0.0
 
@@ -895,7 +895,7 @@ Load Raw Data
 **Edit → Select data**
 - Time range: `0 to 600` (first 10 minutes only)
 
-> **Why?** The full dataset (~868MB) can cause EEGLAB to freeze on a Mac with limited RAM. For learning purposes, trimming to a smaller segment makes processing much faster.
+ **Why?** The full dataset (~868MB) can cause EEGLAB to freeze on a Mac with limited RAM. For learning purposes, trimming to a smaller segment makes processing much faster.
 
 ---
 
@@ -904,8 +904,8 @@ Load Raw Data
 - Lower edge: `1` Hz
 - Upper edge: `40` Hz
 
-> **Why?** Removes slow drifts below 1Hz and high-frequency noise above 40Hz.
-> **Important:** Channel locations must be added before filtering — otherwise errors will occur.
+**Why?** Removes slow drifts below 1Hz and high-frequency noise above 40Hz.
+**Important:** Channel locations must be added before filtering — otherwise errors will occur.
 
 ---
 
@@ -914,7 +914,7 @@ Load Raw Data
 - Channel(s): `EXG1 EXG2 EXG3 EXG4 EXG5 EXG6 EXG7 EXG8`
 - Check "on → remove these"
 
-> **Why?** EXG1–EXG8 are external electrodes (EOG, muscle). BioSemi64.loc contains only 64 channels, so EXG channels must be removed first to avoid a channel count mismatch (70 vs 64).
+**Why?** EXG1–EXG8 are external electrodes (EOG, muscle). BioSemi64.loc contains only 64 channels, so EXG channels must be removed first to avoid a channel count mismatch (70 vs 64).
 
 ---
 
@@ -925,7 +925,7 @@ Load Raw Data
 3. Select file format: **"EEGLAB polar .loc file"**
 4. Navigate to `ds006648/code/BioSemi64.loc`
 
-> **Why?** Without channel locations, most EEGLAB functions (ICA, topography plots, re-referencing) will not work.
+**Why?** Without channel locations, most EEGLAB functions (ICA, topography plots, re-referencing) will not work.
 
 ---
 
@@ -939,7 +939,7 @@ Key settings:
 | Flat for more than | **5** sec | Flat signal = dead electrode |
 | Min acceptable correlation | **0.85** | Channels with <85% similarity to neighbors are removed |
 
-> **No channels removed?** That means all channels are good — that's perfectly fine!
+**No channels removed?** That means all channels are good — that's perfectly fine!
 
 ---
 
@@ -947,7 +947,7 @@ Key settings:
 **Tools → Re-reference the data**
 - Select "Compute average reference"
 
-> **Why?** The original recording used earlobes (EXG5, EXG6) as reference. Average reference sets the mean of all channels to zero, providing a more balanced and standard reference. Required before ICA.
+**Why?** The original recording used earlobes (EXG5, EXG6) as reference. Average reference sets the mean of all channels to zero, providing a more balanced and standard reference. Required before ICA.
 
 ---
 
@@ -955,13 +955,13 @@ Key settings:
 **Tools → Decompose data by ICA**
 - Algorithm: **picard (infomax picard.m)** recommended
 
-> **runica vs picard:**
-> - runica: Standard algorithm, but very slow (hours)
-> - picard: Same result, much faster (minutes to tens of minutes)
->
-> **Rank 63 popup:** After average referencing, one degree of freedom is lost mathematically, so 64 channels → rank 63. This is normal — just click OK.
->
-> **No Interrupt window with picard:** Unlike runica, picard may not show an Interrupt window. If menus are unclickable, ICA is still running.
+**runica vs picard:**
+- runica: Standard algorithm, but very slow (hours)
+- picard: Same result, much faster (minutes to tens of minutes)
+
+**Rank 63 popup:** After average referencing, one degree of freedom is lost mathematically, so 64 channels → rank 63. This is normal — just click OK.
+
+**No Interrupt window with picard:** Unlike runica, picard may not show an Interrupt window. If menus are unclickable, ICA is still running.
 
 ---
 
@@ -1010,7 +1010,7 @@ Event-Related Potential. EEG signals time-locked to a specific event (stimulus),
 - Epoch limits: `-4 11` (seconds: 4s before to 11s after stimulus)
 - Remove first 2 epochs (practice trials)
 
-> **Minimum trials for ERP:** At least **20–30 trials per condition** recommended. A 10-minute trimmed dataset may not have enough trials — suitable for practice only.
+**Minimum trials for ERP:** At least **20–30 trials per condition** recommended. A 10-minute trimmed dataset may not have enough trials — suitable for practice only.
 
 ---
 
