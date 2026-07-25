@@ -1152,5 +1152,5 @@ Luckily, the teacher has a separate master attendance sheet (our Excel files) th
 
 <img width="902" height="736" alt="Screenshot 2026-06-20 at 9 07 41 pm" src="https://github.com/user-attachments/assets/16e6682b-0eee-440a-afd2-c32436570969" />
 
-  
+ 
 
